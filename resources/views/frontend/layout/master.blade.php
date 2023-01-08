@@ -21,6 +21,7 @@
 <link href="{{ asset('frontend/css/plugins/slick.css') }}" rel="stylesheet">
 <link href="{{ asset('frontend/css/plugins/snackbar.min.css') }}" rel="stylesheet">
 <link href="{{ asset('frontend/css/plugins/themify.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="{{ asset('frontend/css/styles.css') }}" rel="stylesheet">
 
@@ -47,6 +48,38 @@
 			position: absolute;
 			bottom: -26px;
 			left: 10px;
+		}
+		select.select-custom{
+			cursor: pointer;
+		}
+		select.select-custom:hover .select2-container--default .select2-selection--single{
+			border-color: #575757;
+		}
+		.select2-selection__rendered{
+			font-size: 1rem;
+			color: #777777b6 !important;
+			font-weight: 400 !important;
+			padding: 0px !important;
+		}
+		.select2-selection--single{
+			height: auto !important;
+			border-radius: 0px !important;
+			border-color: #e5e5e5 !important;
+			padding: 10px 15px !important;
+			transition: all ease-in 0.4s;
+		}
+		.select2-selection__arrow{
+			right: 10px !important;
+			top: 50% !important;
+			transform: translateY(-50%)
+		}
+		.form-control::-moz-placeholder {
+			color: #777777b6;
+			opacity: 1;
+		}
+		.form-control:-ms-input-placeholder,
+		.form-control::-webkit-input-placeholder {
+			color: #777777b6;
 		}
 	</style>
 
@@ -489,6 +522,7 @@
 <script src="{{ asset('frontend/js/jQuery.style.switcher.js') }}"></script>
 <script src="{{ asset('frontend/js/custom.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>	
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- ============================================================== -->
 <!-- This page plugins -->
 <!-- ============================================================== -->	

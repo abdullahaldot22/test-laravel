@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\CartList;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\CouponStore;
 use App\Models\inventory;
 use Illuminate\Http\Request;
 use App\Models\customerlogin;
+use App\Models\State;
 use Illuminate\Support\Facades\Auth;
 
 class customerController extends Controller
@@ -58,8 +61,14 @@ class customerController extends Controller
 
     function checkout_page(){
         $carts = CartList::where('customer_id', Auth::guard('customerlogin')->id())->get();
+        $countries = Country::all();
+        $states = State::all();
+        $cities = City::all();
         return view('frontend.profile_personal.checkout', [
             'carts' => $carts,
+            'countries' => $countries,
+            'states' => $states,
+            'cities' => $cities,
         ]);
     }
 

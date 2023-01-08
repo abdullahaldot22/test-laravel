@@ -74,8 +74,11 @@
 										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 											<div class="form-group">
 												<label class="text-dark">Country *</label>
-												<select class="custom-select" name="country">
-												  <option value="">Select Country</option>
+												<select class="custom-select select-custom country" name="country">
+													<option value="">Select Country</option>
+													@foreach($countries as $country)
+														<option value="{{ $country->id }}">{{ $country->name }}</option>
+													@endforeach
 												</select>
 											</div>
 										</div>
@@ -83,8 +86,8 @@
 										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 											<div class="form-group">
 												<label class="text-dark">State *</label>
-												<select class="custom-select" name="country">
-												  <option value="">Select Country</option>
+												<select class="custom-select select-custom stateOpt" name="state">
+													<option value="" class="oned">Select State</option>
 												</select>
 											</div>
 										</div>
@@ -92,7 +95,7 @@
 										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 											<div class="form-group">
 												<label class="text-dark">City / Town *</label>
-												<select class="custom-select" name="city">
+												<select class="custom-select select-custom cityOpt" name="city">
 													<option value="">Select City / Town</option>
 												  </select>
 											</div>
@@ -235,6 +238,46 @@
 		$('.charge').html(charge);
 		$('.grand_total').html(grand_total);
 		// alert(charge);
+	});
+</script>
+
+<script>
+	$(document).ready(function() {
+    $('.select-custom').select2();
+});
+</script>
+
+<script>
+	$('.country').change(function () {
+		var country = $(this).val();
+		
+		$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
+		$.ajax({
+			type: 'POST',
+			url: '/getState',
+			data: {'country':country},
+			success: function (data) {
+				$('.stateOpt').html(data);
+			}
+		});
+	});
+</script>
+
+<script>
+	$('.stateOpt').change(function () {
+		var state = $(this).val();
+		
+		$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+
+		$.ajax({
+			type: 'POST',
+			url: '/getCity',
+			data: {'state':state},
+			success: function (data) {
+				$('.cityOpt').html(data);
+			}
+		});
 	});
 </script>
 @endsection

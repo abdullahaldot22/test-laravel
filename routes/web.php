@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\usercontroller;
 use App\HTTP\Controllers\productcontroller;
 use App\HTTP\Controllers\CategoryController;
+use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerController;
 use App\Http\Controllers\CustomerLoginController;
@@ -32,7 +33,7 @@ Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/product/details/{slug}', [FrontendController::class, 'product_details'])->name('product.details');
 Route::get('/login/user', [customerController::class, 'login_page'])->name('user.login.page');
 Route::get('/user/cart/', [customerController::class, 'cart_page'])->name('cart.page')->middleware('customerlogin');
-Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page');
+Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page')->middleware('customerlogin');
 
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
@@ -51,6 +52,11 @@ Route::post('/store/update/cart', [CartController::class, 'cart_update'])->name(
 // wish -----------------------------
 Route::post('/store/wishlist', [WishListController::class, 'store_wish'])->name('store.wishlist');
 Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishitm_remove'])->name('wishitm.remove');
+
+// checkout ------------------------------
+Route::post('/getState', [checkoutController::class, 'getState']);
+Route::post('/getCity', [checkoutController::class, 'getCity']);
+
 
 
 
