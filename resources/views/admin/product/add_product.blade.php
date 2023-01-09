@@ -102,6 +102,21 @@
                     <div class="row part">
                         <div class="pi">
                             <div class="mb-3">
+                                <label for="" class="form-label">Delivary Charge inside City</label>
+                                <input type="text" name="charge_ic" id="" placeholder="Charge in TK" class="form-control">
+                            </div>
+                        </div>
+                        <div class="pi">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Delivary Charge outside City</label>
+                                <input type="text" name="charge_oc" id="" placeholder="Charge in TK" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row part">
+                        <div class="pi">
+                            <div class="mb-3">
                                 <label for="" class="form-label">Short Description</label>
                                 <textarea name="short_des" id="" cols="30" rows="7" placeholder="Write a Simple Discrpition about this Product .." class="form-control"></textarea>
                             </div>

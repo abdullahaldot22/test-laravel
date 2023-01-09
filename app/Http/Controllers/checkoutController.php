@@ -25,4 +25,8 @@ class checkoutController extends Controller
         }
         echo $val;
     }
+
+    function order_store(Request $request){
+        print_r($request->all());
+    }
 }

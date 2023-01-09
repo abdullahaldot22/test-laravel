@@ -167,6 +167,7 @@
 								'total_cost'=>$total_cost,
 								'discount_tg'=>$discount_tg,
 								'percentage'=>$discount_prcnt,
+								'method'=>$method,
 							]);
 						@endphp
 						

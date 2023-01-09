@@ -32,7 +32,7 @@
 					</div>
 					
 					<div class="row justify-content-between">
-						<form action="" method="post">
+						<form action="{{ route('order.store') }}" method="post">
 							@csrf
 							<div class="col-lg-12" style="display:flex; flex-flow: row wrap; justify-content:space-around;">
 								<div class="col-lg-7 col-md-12">
@@ -153,12 +153,12 @@
 											<h6>Delivery Location</h6>
 											<ul class="no-ul-list">
 												<li>
-													<input id="c1" class="radio-custom location" name="charge" type="radio" value="60">
-													<label for="c1" class="radio-custom-label" value="1">Inside City</label>
+													<input id="c1" class="radio-custom location" name="charge" value="1" type="radio" value="60">
+													<label for="c1" class="radio-custom-label">Inside City</label>
 												</li>
 												<li>
-													<input id="c2" class="radio-custom location" name="charge" type="radio" value="180">
-													<label for="c2" class="radio-custom-label" value="2">Outside City</label>
+													<input id="c2" class="radio-custom location" name="charge" value="2" type="radio" value="180">
+													<label for="c2" class="radio-custom-label">Outside City</label>
 												</li>
 											</ul>
 										</div>
@@ -168,16 +168,16 @@
 											<h6>Select Payment Method</h6>
 											<ul class="no-ul-list">
 												<li>
-													<input id="c3" class="radio-custom" name="payment_method" type="radio">
-													<label for="c3" class="radio-custom-label" value="1">Cash on Delivery</label>
+													<input id="c3" class="radio-custom" name="payment_method" value="1" type="radio">
+													<label for="c3" class="radio-custom-label">Cash on Delivery</label>
 												</li>
 												<li>
-													<input id="c4" class="radio-custom" name="payment_method" type="radio">
-													<label for="c4" class="radio-custom-label" value="2">Pay With SSLCommerz</label>
+													<input id="c4" class="radio-custom" name="payment_method" value="2" type="radio">
+													<label for="c4" class="radio-custom-label">Pay With SSLCommerz</label>
 												</li>
 												<li>
-													<input id="c5" class="radio-custom" name="payment_method" type="radio">
-													<label for="c5" class="radio-custom-label" value="3">Pay With Stripe</label>
+													<input id="c5" class="radio-custom" name="payment_method" value="3" type="radio">
+													<label for="c5" class="radio-custom-label">Pay With Stripe</label>
 												</li>
 											</ul>
 										</div>
@@ -187,11 +187,15 @@
 									@php
 										$total = session('total_cost');
 										$discount = session('discount_tg');
+										$percentage = session('percentage');
+										$method = session('method');
 									@endphp
 	
-									<div class="">
-										<input type="hidden" class="total" value="{{ $total }}">
-										<input type="hidden" class="discount" value="{{ $discount }}">
+									<div class="hidden">
+										<input type="hidden" class="total" name="sub_total" value="{{ $total }}">
+										<input type="hidden" class="discount" name="discount" value="{{ $discount }}">
+										<input type="hidden" class="discount" name="percentage" value="{{ $percentage }}">
+										<input type="hidden" class="discount" name="method" value="{{ $method }}">
 									</div>
 									
 									@php
@@ -217,7 +221,11 @@
 									</div>
 									</div>
 									
-									<button type="submit" class="btn btn-block btn-dark mb-3" href="checkout.html">Place Your Order</button>
+										<div class="hidden">
+											<input type="hidden" name="grand_total" value="{{ number_format($grand_total) }}">
+										</div>
+
+									<button type="submit" class="btn btn-block btn-dark mb-3">Place Your Order</button>
 								</div>
 							</div>
 						</form>

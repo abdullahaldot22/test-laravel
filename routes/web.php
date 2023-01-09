@@ -38,6 +38,8 @@ Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->nam
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getavQuantity', [FrontendController::class, 'getavQuantity']);
+Route::post('/getState', [checkoutController::class, 'getState']);
+Route::post('/getCity', [checkoutController::class, 'getCity']);
 
 // log in
 Route::post('/store/register/customer', [CustomerRegisterController::class, 'user_register'])->name('customer.register.store');
@@ -54,8 +56,7 @@ Route::post('/store/wishlist', [WishListController::class, 'store_wish'])->name(
 Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishitm_remove'])->name('wishitm.remove');
 
 // checkout ------------------------------
-Route::post('/getState', [checkoutController::class, 'getState']);
-Route::post('/getCity', [checkoutController::class, 'getCity']);
+Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store');
 
 
 
