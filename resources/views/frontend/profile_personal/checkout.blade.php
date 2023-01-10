@@ -61,7 +61,7 @@
 										<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 											<div class="form-group">
 												<label class="text-dark">Mobile Number *</label>
-												<input type="text" name="mobile" class="form-control" placeholder="Mobile Number" />
+												<input type="tel" name="phone" class="form-control" placeholder="Mobile Number" />
 											</div>
 										</div>
 										
@@ -119,6 +119,15 @@
 									
 								
 								</div>
+
+								@php
+									$total = session('total_cost');
+									$discount = session('discount_tg');
+									$percentage = session('percentage');
+									$method = session('method');
+									$charge_ic = session('charge_ic');
+									$charge_oc = session('charge_oc');
+								@endphp
 							
 								<!-- Sidebar -->
 								<div class="col-lg-4 col-md-12">
@@ -153,11 +162,11 @@
 											<h6>Delivery Location</h6>
 											<ul class="no-ul-list">
 												<li>
-													<input id="c1" class="radio-custom location" name="charge" value="1" type="radio" value="60">
+													<input id="c1" class="radio-custom location" name="charge" value="{{ $charge_ic }}" type="radio">
 													<label for="c1" class="radio-custom-label">Inside City</label>
 												</li>
 												<li>
-													<input id="c2" class="radio-custom location" name="charge" value="2" type="radio" value="180">
+													<input id="c2" class="radio-custom location" name="charge" value="{{ $charge_oc }}" type="radio">
 													<label for="c2" class="radio-custom-label">Outside City</label>
 												</li>
 											</ul>
@@ -184,18 +193,14 @@
 									</div>
 	
 									
-									@php
-										$total = session('total_cost');
-										$discount = session('discount_tg');
-										$percentage = session('percentage');
-										$method = session('method');
-									@endphp
+									
 	
 									<div class="hidden">
 										<input type="hidden" class="total" name="sub_total" value="{{ $total }}">
 										<input type="hidden" class="discount" name="discount" value="{{ $discount }}">
-										<input type="hidden" class="discount" name="percentage" value="{{ $percentage }}">
-										<input type="hidden" class="discount" name="method" value="{{ $method }}">
+										<input type="hidden" class="percentage" name="percentage" value="{{ $percentage }}">
+										<input type="hidden" class="method" name="method" value="{{ $method }}">
+										<input type="hidden" class="charge_tg" name="charge_tg" value="">
 									</div>
 									
 									@php
@@ -215,16 +220,11 @@
 											<span>Charge</span> <span class="ml-auto text-dark ft-medium">&#2547; <span class="charge">0</span></span>
 										</li>
 										<li class="list-group-item d-flex text-dark fs-sm ft-regular">
-											<span>Total</span> <span class="ml-auto text-dark ft-medium">&#2547; <span class="grand_total" name="grand_total">{{ number_format($grand_total) }}</span></span>
+											<span>Total</span> <span class="ml-auto text-dark ft-medium">&#2547; <span class="grand_total">{{ number_format($grand_total) }}</span></span>
 										</li>
 										</ul>
 									</div>
 									</div>
-									
-										<div class="hidden">
-											<input type="hidden" name="grand_total" value="{{ number_format($grand_total) }}">
-										</div>
-
 									<button type="submit" class="btn btn-block btn-dark mb-3">Place Your Order</button>
 								</div>
 							</div>
@@ -244,6 +244,7 @@
 		var total = $('.total').val();
 		var grand_total = parseInt(total)+parseInt(charge)-parseInt(discount);
 		$('.charge').html(charge);
+		$('.charge_tg').val(charge);
 		$('.grand_total').html(grand_total);
 		// alert(charge);
 	});

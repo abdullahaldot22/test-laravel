@@ -223,7 +223,7 @@
 				<div class="nav-toggle"></div>
 				<div class="nav-menus-wrapper">
 					<ul class="nav-menu">
-						<li><a href="#" class="pl-0">Home</a></li>
+						<li><a href="{{ route('customer.home') }}" class="pl-0">Home</a></li>
 						<li><a href="#">Shop</a></li>
 						<li><a href="#">About Us</a></li>
 						<li><a href="#">Contact</a></li>

@@ -39,6 +39,8 @@
                                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x mb-4">
                                     @php
 										$total_cost = 0;
+										$charge_ic = 0;
+										$charge_oc = 0;
 									@endphp
                                     @foreach ($cart as $cart)
                                     
@@ -74,6 +76,9 @@
                                         </li>
 										@php
 											$total_cost += $cart->rel_to_product->after_discount * $cart->quantity;
+											$charge_ic += $cart->rel_to_product->charge_ic;
+											$charge_oc += $cart->rel_to_product->charge_oc;
+											
 										@endphp
                                     @endforeach
                                     
@@ -112,6 +117,7 @@
 							$method;
 							$drange;
 							$discount_prcnt = null;
+							
 							switch ($method) {
 								case '1':
 										if ($drange != null && $total_cost*($discount/100) > $drange) {
@@ -122,6 +128,22 @@
 											$discount_tg = $total_cost*($discount/100);
 											$discount_prcnt = $discount;
 										}
+										// foreach ($cart as $cart) {
+										// 	$val = $cart->rel_to_product->coupon_applicability;
+										// 	if ($val != 1 && ($val == 2 || $val == 4)) {
+										// 		if ($drange != null && $total_cost*($discount/100) > $drange) {
+										// 			$total_wd = $total_cost-$drange;
+										// 			$discount_tg = $drange; 
+										// 		}else {
+										// 			$total_wd = $total_cost-($total_cost*($discount/100));
+										// 			$discount_tg = $total_cost*($discount/100);
+										// 			$discount_prcnt = $discount;
+										// 		}
+										// 	}
+										// 	if ($val) {
+										// 		# code...
+										// 	}
+										// }
 									break;
 								case '2':
 										$total_wd = $total_cost-$discount;
@@ -168,6 +190,8 @@
 								'discount_tg'=>$discount_tg,
 								'percentage'=>$discount_prcnt,
 								'method'=>$method,
+								'charge_ic'=>$charge_ic,
+								'charge_oc'=>$charge_oc,
 							]);
 						@endphp
 						

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('discount')->nullable();
             $table->integer('after_discount');
             $table->string('brand')->nullable();
+            $table->string('coupon_applicability')->nullable();
             $table->integer('charge_ic')->nullable();
             $table->integer('charge_oc')->nullable();
             $table->text('short_description')->nullable();

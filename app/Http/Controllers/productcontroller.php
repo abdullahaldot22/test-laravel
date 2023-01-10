@@ -57,6 +57,7 @@ class productcontroller extends Controller
             'discount'=>$request->discount,
             'after_discount'=>((int)($request->price-($request->price*$request->discount/100))),
             'brand'=>$request->brand,
+            'coupon_applicability'=>$request->cp_discount_applicability,
             'charge_ic'=>$request->charge_ic,
             'charge_oc'=>$request->charge_oc,
             'short_description'=>$request->short_des,

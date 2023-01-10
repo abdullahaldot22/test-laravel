@@ -86,6 +86,10 @@
             transform: translateY(-50%);
             transition: all ease-out 0.2s;
         }
+		.row .space label{
+            padding-left: 8px;
+			font-size: 14px !important;
+		}
     </style>
 
 </head>

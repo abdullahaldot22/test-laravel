@@ -100,6 +100,39 @@
                     </div>
 
                     <div class="row part">
+                        <div class="col-lg-12 p-0">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Coupon Discount Applicability</label>
+                                <div class="row mt-1">
+    
+                                    <div class="col-lg-6 col-12 pl-4">
+                                        <div class="space">
+                                            <input type="radio" name="cp_discount_applicability" id="coupon1" value="1">
+                                            <label class="radio_label" for="coupon1">No Coupon Discount Applicable</label>
+                                        </div>
+                                        <div class="space">
+                                            <input type="radio" name="cp_discount_applicability" id="coupon2" value="2">
+                                            <label class="radio_label" for="coupon2">Only Percentage Type Coupon Discount Applicable</label>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6 col-12 pi">
+                                        <div class="space">
+                                            <input type="radio" name="cp_discount_applicability" id="coupon3" value="3">
+                                            <label class="radio_label" for="coupon3">Only Solid Amount Type Coupon Discount Applicable</label>
+                                        </div>
+                                        <div class="space">
+                                            <input type="radio" name="cp_discount_applicability" id="coupon4" value="4">
+                                            <label class="radio_label" for="coupon4">Both Type Coupon Discount Applicable</label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>  
+                        </div>  
+                    </div>
+
+                    <div class="row part">
                         <div class="pi">
                             <div class="mb-3">
                                 <label for="" class="form-label">Delivary Charge inside City</label>
