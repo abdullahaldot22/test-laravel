@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\billingDetails;
+use App\Models\CartList;
 use App\Models\City;
+use App\Models\inventory;
 use App\Models\Order;
+use App\Models\orderProduct;
 use App\Models\State;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,7 +35,7 @@ class checkoutController extends Controller
     }
 
     function order_store(Request $request){
-        // print_r($request->all());
+        print_r($request->all());
         // die();
         $city = City::find($request->city);
         $rand = substr($city->name, 0, 3);
@@ -51,6 +55,40 @@ class checkoutController extends Controller
                 'total' => $request->sub_total + $request->charge_tg - $request->discount,
                 'created_at' => Carbon::now(),
             ]);
+            
+            billingDetails::insert([
+                'order_id'=>$order_str,
+                'customer_id'=>Auth::guard('customerlogin')->id(),
+                'name'=>$request->name,
+                'mail'=>$request->mail,
+                'company'=>$request->company,
+                'phone'=>$request->phone,
+                'address'=>$request->address,
+                'country_id'=>$request->country,
+                'city_id'=>$request->city,
+                'zip'=>$request->zip,
+                'notes'=>$request->note,
+                'created_at'=>Carbon::now(),
+            ]);
+
+            $carts = CartList::where('customer_id', Auth::guard('customerlogin')->id())->get();
+            foreach ($carts as $cart) {
+                orderProduct::insert([
+                    'order_id'=>$order_str,
+                    'customer_id'=>Auth::guard('customerlogin')->id(),
+                    'product_id'=>$cart->product_id,
+                    'price'=>$cart->rel_to_product->after_discount,
+                    'color_id'=>$cart->color_id,
+                    'size_id'=>$cart->size_id,
+                    'quantity'=>$cart->quantity,
+                    'created_at'=>Carbon::now(),
+                ]);
+
+                inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
+            }
+
+            CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
+
             return back();
         }
         elseif ($request->payment_method == 2) {

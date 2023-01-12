@@ -117,9 +117,33 @@
 							$method;
 							$drange;
 							$discount_prcnt = null;
+
+							// echo $val;
+							// foreach ($cart as $cart) {
+							// 	$val = $cart->rel_to_product->coupon_applicability;
+							// 		if ($val != 1 && ($val == 2 || $val == 4)) {
+							// 			if ($drange != null && $total_cost*($discount/100) > $drange) {
+							// 				$total_wd = $total_cost-$drange;
+							// 				$discount_tg = $drange; 
+							// 			}else {
+							// 				$total_wd = $total_cost-($total_cost*($discount/100));
+							// 				$discount_tg = $total_cost*($discount/100);
+							// 				$discount_prcnt = $discount;
+							// 			}
+							// 		}
+							// 		if ($val != 1 && ($val == 3 || $val == 4)) {
+							// 			$total_wd = $total_cost-$discount;
+							// 			$discount_tg = $discount; 
+							// 		}
+							// 		// echo $val;
+									
+							// 		// echo $cart;
+							// 	}
+
 							
 							switch ($method) {
 								case '1':
+									
 										if ($drange != null && $total_cost*($discount/100) > $drange) {
 											$total_wd = $total_cost-$drange;
 											$discount_tg = $drange; 
@@ -128,22 +152,7 @@
 											$discount_tg = $total_cost*($discount/100);
 											$discount_prcnt = $discount;
 										}
-										// foreach ($cart as $cart) {
-										// 	$val = $cart->rel_to_product->coupon_applicability;
-										// 	if ($val != 1 && ($val == 2 || $val == 4)) {
-										// 		if ($drange != null && $total_cost*($discount/100) > $drange) {
-										// 			$total_wd = $total_cost-$drange;
-										// 			$discount_tg = $drange; 
-										// 		}else {
-										// 			$total_wd = $total_cost-($total_cost*($discount/100));
-										// 			$discount_tg = $total_cost*($discount/100);
-										// 			$discount_prcnt = $discount;
-										// 		}
-										// 	}
-										// 	if ($val) {
-										// 		# code...
-										// 	}
-										// }
+										
 									break;
 								case '2':
 										$total_wd = $total_cost-$discount;

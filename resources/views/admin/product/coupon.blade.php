@@ -117,6 +117,12 @@
                                 <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Range of Lowest Total Amount to Apply on" name="lowest_amount_range" id="range">
+                            @error('lowest_amount_range')
+                                <strong class="tt">{{ $message }}</strong>
+                            @enderror
+                        </div>
                         <div class="mb-4">
                             <label for="last_date">Validity</label>
                             <input type="date" class="form-control" name="validity_date" id="last_date">

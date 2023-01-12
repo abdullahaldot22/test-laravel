@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('discount_method');
             $table->integer('discount_amount');
             $table->integer('discount_range')->nullable();
+            $table->integer('lowest_total_amount')->nullable();
             $table->dateTime('validity_date');
             $table->string('added_by');
             $table->string('deleted_at')->nullable();

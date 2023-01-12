@@ -25,6 +25,7 @@ class CouponController extends Controller
                 'discount_method'=>'required|digits_between:1,2|max:2',
                 'discount_amount'=>'required|digits_between:1,99999|max:5',
                 'discount_range'=>'nullable|digits_between:1,99999|max:5',
+                'lowest_amount_range'=>'nullable|digits_between:1,999999',
                 'validity_date'=>'required|date',
             ],[
                 'event_name.required'=>'This name is required!',
@@ -41,6 +42,7 @@ class CouponController extends Controller
                 'discount_method'=>$request->discount_method,
                 'discount_amount'=>$request->discount_amount,
                 'discount_range'=>$request->discount_range,
+                'lowest_total_amount'=>$request->lowest_amount_range,
                 'validity_date'=>$request->validity_date,
                 'created_at'=>Carbon::now(),
                 'added_by'=>Auth::id(),
