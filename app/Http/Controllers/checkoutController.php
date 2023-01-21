@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\billingDetails;
-use App\Models\CartList;
-use App\Models\City;
-use App\Models\inventory;
-use App\Models\Order;
-use App\Models\orderProduct;
-use App\Models\State;
+use App\Mail\InvoiceMail;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\City;
+use App\Models\Order;
+use App\Models\State;
+use App\Models\CartList;
+use App\Models\inventory;
 use Illuminate\Support\Str;
+use App\Models\orderProduct;
+use Illuminate\Http\Request;
+use App\Models\billingDetails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class checkoutController extends Controller
 {
@@ -42,7 +44,7 @@ class checkoutController extends Controller
         $order_str = '#'.Str::upper($rand).'-'.random_int(1000999, 999999999);
 
         if ($request->payment_method == 1) {
-            Order::insert([
+            $order_id = Order::insertGetId([
                 'order_id' => $order_str,
                 'customer_id' => Auth::guard('customerlogin')->id(),
                 'phone' => $request->phone,
@@ -89,6 +91,10 @@ class checkoutController extends Controller
 
             CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
 
+
+            Mail::to($request->mail)->send(new InvoiceMail($order_id));
+
+
             return back();
         }
         elseif ($request->payment_method == 2) {
@@ -99,4 +105,5 @@ class checkoutController extends Controller
         }
 
     }
+
 }

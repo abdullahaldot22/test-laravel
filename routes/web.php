@@ -58,7 +58,9 @@ Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishi
 // checkout ------------------------------
 Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store');
 
+// mail check ----------------------------------------------
 
+Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
 
 
 

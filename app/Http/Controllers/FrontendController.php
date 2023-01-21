@@ -70,4 +70,8 @@ class FrontendController extends Controller
         }
         echo $found;
     }
+
+    function invoice_check(){
+        return view('mail.orderInvoice');
+    }
 }
