@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InvoiceMail extends Mailable
+class invoiceMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,9 +18,11 @@ class InvoiceMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    public $getdata;
+    public function __construct($data)
     {
-        //
+        $this->getdata = $data;
     }
 
     /**
@@ -44,6 +46,9 @@ class InvoiceMail extends Mailable
     {
         return new Content(
             view: 'mail.orderInvoice',
+            with: [
+                'order_id' => $this->getdata,
+            ]
         );
     }
 

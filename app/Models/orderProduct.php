@@ -10,4 +10,8 @@ class orderProduct extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    function rel_to_product() {
+        return $this->belongsTo(product::class, 'product_id');
+    }
 }

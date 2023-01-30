@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('phone');
             $table->string('address');
-            $table->integer('country_id');
+            $table->integer('state_id');
             $table->integer('city_id');
+            $table->integer('country_id');
             $table->integer('zip')->nullable();
             $table->string('notes')->nullable();
             $table->timestamps();

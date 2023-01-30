@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\InvoiceMail;
+use App\Mail\invoiceMail as MailInvoiceMail;
 use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Order;
@@ -43,14 +43,21 @@ class checkoutController extends Controller
         $rand = substr($city->name, 0, 3);
         $order_str = '#'.Str::upper($rand).'-'.random_int(1000999, 999999999);
 
+        if($request->percentage == ''){
+            $so_data = $request->discount;}
+        else{
+            $so_data = $request->percentage;
+        }
+        $so_data;
+
         if ($request->payment_method == 1) {
-            $order_id = Order::insertGetId([
+            Order::insert([
                 'order_id' => $order_str,
                 'customer_id' => Auth::guard('customerlogin')->id(),
                 'phone' => $request->phone,
                 'sub_total' => $request->sub_total,
                 'discount' => $request->discount,
-                'discount_amount' => $request->percentage,
+                'discount_amount' => $so_data,
                 'discount_method' => $request->method,
                 'charge' => $request->charge_tg,
                 'payment_method' => $request->payment_method,
@@ -68,6 +75,7 @@ class checkoutController extends Controller
                 'address'=>$request->address,
                 'country_id'=>$request->country,
                 'city_id'=>$request->city,
+                'state_id'=>$request->state,
                 'zip'=>$request->zip,
                 'notes'=>$request->note,
                 'created_at'=>Carbon::now(),
@@ -86,16 +94,15 @@ class checkoutController extends Controller
                     'created_at'=>Carbon::now(),
                 ]);
 
-                inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
+                // inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
             }
 
             CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
 
 
-            Mail::to($request->mail)->send(new InvoiceMail($order_id));
+            Mail::to($request->mail)->send(new MailInvoiceMail($order_str));
 
-
-            return back();
+            return redirect('/');
         }
         elseif ($request->payment_method == 2) {
             echo 'SSL';

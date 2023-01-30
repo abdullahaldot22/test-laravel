@@ -38,6 +38,28 @@
     </style>
 </head>
 <body>
+
+
+  @php
+    $product = App\Models\orderProduct::where('order_id', $order_id)->get();
+    $date = App\Models\orderProduct::where('order_id', $order_id)->first()->created_at->format('d M, Y');
+    $discount = App\Models\Order::where('order_id', $order_id)->first()->discount;
+    $charge = App\Models\Order::where('order_id', $order_id)->first()->charge;
+    $sub_total = App\Models\Order::where('order_id', $order_id)->first()->sub_total;
+    $grand_total = App\Models\Order::where('order_id', $order_id)->first()->total;
+// billing details ----------------------------------------------------------------------------------------------
+    $address = App\Models\billingDetails::where('order_id', $order_id)->first()->address;
+    $company = App\Models\billingDetails::where('order_id', $order_id)->first()->company;
+    $phone = App\Models\billingDetails::where('order_id', $order_id)->first()->phone;
+    $mail = App\Models\billingDetails::where('order_id', $order_id)->first()->mail;
+    $name = App\Models\billingDetails::where('order_id', $order_id)->first()->name;
+    $country = App\Models\Country::find(App\Models\billingDetails::where('order_id', $order_id)->first()->country_id)->name;
+    $city = App\Models\City::find(App\Models\billingDetails::where('order_id', $order_id)->first()->city_id)->name;;
+    $state = App\Models\State::find(App\Models\billingDetails::where('order_id', $order_id)->first()->state_id)->name;;
+    $zip = App\Models\billingDetails::where('order_id', $order_id)->first()->zip;
+  @endphp
+
+
 <!-- Header -->
 <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tr>
@@ -100,8 +122,8 @@
                           </tr>
                           <tr>
                             <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: right;">
-                              <small>ORDER</small> #800000025<br />
-                              <small>MARCH 4TH 2016</small>
+                              <small>ORDER</small> {{ $order_id }}<br />
+                              <small>{{ $date }}</small>
                             </td>
                           </tr>
                         </tbody>
@@ -139,14 +161,11 @@
                         <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: normal; line-height: 1; vertical-align: top; padding: 0 10px 7px 0;" width="52%" align="left">
                           Item
                         </th>
-                        <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: normal; line-height: 1; vertical-align: top; padding: 0 0 7px;" align="left">
-                          <small>SKU</small>
-                        </th>
                         <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; font-weight: normal; line-height: 1; vertical-align: top; padding: 0 0 7px;" align="center">
                           Quantity
                         </th>
                         <th style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33; font-weight: normal; line-height: 1; vertical-align: top; padding: 0 0 7px;" align="right">
-                          Subtotal
+                          Price (each)
                         </th>
                       </tr>
                       <tr>
@@ -155,26 +174,18 @@
                       <tr>
                         <td height="10" colspan="4"></td>
                       </tr>
-                      <tr>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #ff0000;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">
-                          Beats Studio Over-Ear Headphones
-                        </td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;"><small>MH792AM/A</small></td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">1</td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">$299.95</td>
-                      </tr>
-                      <tr>
-                        <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #ff0000;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">Beats RemoteTalk Cable</td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;"><small>MHDV2G/A</small></td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">1</td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">$29.95</td>
-                      </tr>
-                      <tr>
-                        <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
-                      </tr>
+
+                      @foreach($product as $val)
+                        <tr>
+                          <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #ff0000;  line-height: 18px;  vertical-align: top; padding:10px 0;" class="article">{{ $val->rel_to_product->product_name }}</td>
+                          <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="center">{{ $val->quantity }}</td>
+                          <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #1e2b33;  line-height: 18px;  vertical-align: top; padding:10px 0;" align="right">${{ $val->price }}</td>
+                        </tr>
+                        <tr>
+                          <td height="1" colspan="4" style="border-bottom:1px solid #e4e4e4"></td>
+                        </tr>
+                      @endforeach
+                      
                     </tbody>
                   </table>
                 </td>
@@ -207,31 +218,37 @@
                           Subtotal
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; white-space:nowrap;" width="80">
-                          $329.90
+                          &#2547; {{ $sub_total }}
                         </td>
                       </tr>
+
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          Shipping &amp; Handling
+                          Discount
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
-                          $15.00
+                          &#2547; {{ $discount }}
                         </td>
                       </tr>
+
+                      <tr>
+                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
+                          Charge
+                        </td>
+                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #646a6e; line-height: 22px; vertical-align: top; text-align:right; ">
+                          &#2547; {{ $charge }}
+                        </td>
+                      </tr>
+
                       <tr>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <strong>Grand Total (Incl.Tax)</strong>
+                          <strong>Grand Total</strong>
                         </td>
                         <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #000; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <strong>$344.90</strong>
+                          <strong>&#2547; {{ $grand_total }}</strong>
                         </td>
                       </tr>
-                      <tr>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #b0b0b0; line-height: 22px; vertical-align: top; text-align:right; "><small>TAX</small></td>
-                        <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #b0b0b0; line-height: 22px; vertical-align: top; text-align:right; ">
-                          <small>$72.40</small>
-                        </td>
-                      </tr>
+
                     </tbody>
                   </table>
                   <!-- /Table Total -->
@@ -278,7 +295,7 @@
                               </tr>
                               <tr>
                                 <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                  Philip Brooks<br> Public Wales, Somewhere<br> New York NY<br> 4468, United States<br> T: 202-555-0133
+                                 {{$address}} <br> {{$company}}, {{$state}}<br> {{$city}}<br> {{$zip}}, {{$country}}<br> T: {{$phone}}
                                 </td>
                               </tr>
                             </tbody>
