@@ -37,11 +37,12 @@ class checkoutController extends Controller
     }
 
     function order_store(Request $request){
-        print_r($request->all());
+        // print_r($request->all());
         // die();
         $city = City::find($request->city);
         $rand = substr($city->name, 0, 3);
         $order_str = '#'.Str::upper($rand).'-'.random_int(1000999, 999999999);
+        $order_product = '';
 
         if($request->percentage == ''){
             $so_data = $request->discount;}
@@ -51,7 +52,7 @@ class checkoutController extends Controller
         $so_data;
 
         if ($request->payment_method == 1) {
-            Order::insert([
+            $order_product = Order::create([
                 'order_id' => $order_str,
                 'customer_id' => Auth::guard('customerlogin')->id(),
                 'phone' => $request->phone,
@@ -80,7 +81,7 @@ class checkoutController extends Controller
                 'notes'=>$request->note,
                 'created_at'=>Carbon::now(),
             ]);
-
+            
             $carts = CartList::where('customer_id', Auth::guard('customerlogin')->id())->get();
             foreach ($carts as $cart) {
                 orderProduct::insert([
@@ -96,8 +97,10 @@ class checkoutController extends Controller
 
                 // inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
             }
+            // $created_at = $order_product->created_at;
+            // echo $created_at;
 
-            CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
+            // CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
 
 
             Mail::to($request->mail)->send(new MailInvoiceMail($order_str));

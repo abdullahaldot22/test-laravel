@@ -11,6 +11,7 @@ use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerController;
 use App\Http\Controllers\CustomerLoginController;
+use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\FrontendController;
 use App\HTTP\Controllers\subcategorycontroller;
@@ -34,6 +35,7 @@ Route::get('/product/details/{slug}', [FrontendController::class, 'product_detai
 Route::get('/login/user', [customerController::class, 'login_page'])->name('user.login.page');
 Route::get('/user/cart/', [customerController::class, 'cart_page'])->name('cart.page')->middleware('customerlogin');
 Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page')->middleware('customerlogin');
+Route::get('/user/profile/', [customerController::class, 'customer_profile_page'])->name('customer.profile')->middleware('customerlogin');
 
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
@@ -57,6 +59,11 @@ Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishi
 
 // checkout ------------------------------
 Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store');
+
+// customer_profile_update --------------------------
+Route::post('/user/profile/update', [customerProfileController::class, 'customer_profile_update'])->name('customer.profile.update');
+
+
 
 // mail check ----------------------------------------------
 

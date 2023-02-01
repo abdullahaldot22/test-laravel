@@ -127,7 +127,7 @@
 								{{ Auth::guard('customerlogin')->user()->name }} <i style="" class="fa-solid fa-user"></i>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							  <a class="dropdown-item" href="#">Profile</a>
+							  <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
 							  <a class="dropdown-item" href="{{ route('customer.logout') }}">Log Out</a>
 							</div>
 						</div>

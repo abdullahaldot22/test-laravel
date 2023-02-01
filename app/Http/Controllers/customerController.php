@@ -72,5 +72,9 @@ class customerController extends Controller
         ]);
     }
 
+    function customer_profile_page(){
+        return view('frontend.profile_personal.customerProfile');
+    }
+
     
 }

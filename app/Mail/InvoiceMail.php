@@ -19,10 +19,14 @@ class invoiceMail extends Mailable
      * @return void
      */
 
-    public $getdata;
+    public $data;
+    public $order_str;
+    public $created_at;
     public function __construct($data)
     {
-        $this->getdata = $data;
+        $this->data = $data;
+        // $this->order_str = $this->data->order_str;
+        // $this->created_at = $this->data->created_at;
     }
 
     /**
@@ -47,7 +51,8 @@ class invoiceMail extends Mailable
         return new Content(
             view: 'mail.orderInvoice',
             with: [
-                'order_id' => $this->getdata,
+                'order_id' => $this->data,
+                // 'created_at' => $this->created_at,
             ]
         );
     }

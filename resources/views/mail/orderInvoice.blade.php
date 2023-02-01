@@ -41,12 +41,16 @@
 
 
   @php
+  // echo $created_at;
+  // echo $order_id;
     $product = App\Models\orderProduct::where('order_id', $order_id)->get();
     $date = App\Models\orderProduct::where('order_id', $order_id)->first()->created_at->format('d M, Y');
+    // $date = $created_at;
     $discount = App\Models\Order::where('order_id', $order_id)->first()->discount;
+    $payment_method = App\Models\Order::where('order_id', $order_id)->first()->payment_method;
     $charge = App\Models\Order::where('order_id', $order_id)->first()->charge;
     $sub_total = App\Models\Order::where('order_id', $order_id)->first()->sub_total;
-    $grand_total = App\Models\Order::where('order_id', $order_id)->first()->total;
+    $grand_total = number_format(App\Models\Order::where('order_id', $order_id)->first()->total);
 // billing details ----------------------------------------------------------------------------------------------
     $address = App\Models\billingDetails::where('order_id', $order_id)->first()->address;
     $company = App\Models\billingDetails::where('order_id', $order_id)->first()->company;
@@ -84,7 +88,7 @@
                       <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                         <tbody>
                           <tr>
-                            <td align="left"> <img src="http://www.supah.it/dribbble/017/logo.png" width="32" height="32" alt="logo" border="0" /></td>
+                            <td align="left"> <img src="https://i.postimg.cc/VvrXgtRT/escudo-psg.webp" height="50" alt="logo" border="0" /></td>
                           </tr>
                           <tr class="hiddenMobile">
                             <td height="40"></td>
@@ -315,12 +319,17 @@
                               <tr>
                                 <td width="100%" height="10"></td>
                               </tr>
-                              <tr>
-                                <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                  Credit Card<br> Credit Card Type: Visa<br> Worldpay Transaction ID: <a href="#" style="color: #ff0000; text-decoration:underline;">4185939336</a><br>
-                                  <a href="#" style="color:#b0b0b0;">Right of Withdrawal</a>
-                                </td>
-                              </tr>
+
+                              @if($payment_method != 1)
+                                <tr>
+                                  <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">Credit Card<br> Credit Card Type: Visa<br> Worldpay Transaction ID: <a href="#" style="color: #ff0000; text-decoration:underline;">4185939336</a><br><a href="#" style="color:#b0b0b0;">Right of Withdrawal</a></td>
+                                </tr>
+                              @else
+                                <tr>
+                                  <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">Cash on Delivary</td>
+                                </tr>
+                              @endif
+
                             </tbody>
                           </table>
                         </td>
