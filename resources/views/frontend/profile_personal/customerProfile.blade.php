@@ -28,18 +28,22 @@
                 <div class="d-block border rounded mfliud-bot">
                     <div class="dashboard_author px-2 py-5">
                         <div class="dash_auth_thumb circle p-1 border d-inline-flex mx-auto mb-2">
-                            <img src="assets/img/team-1.jpg" class="img-fluid circle" width="100" alt="" />
+                            @if(Auth::guard('customerlogin')->user()->profile_image == null)
+                                <img src="{{ Avatar::create(Auth::guard('customerlogin')->user()->name)->toBase64() }}" class="img-fluid circle" width="100" height="100" alt="" />
+                            @else
+                                <img src="{{ asset('uploads/customer') }}/{{ Auth::guard('customerlogin')->user()->profile_image }}" class="img-fluid circle" width="100" height="100" alt="" />
+                            @endif
                         </div>
                         <div class="dash_caption">
                             <h4 class="fs-md ft-medium mb-0 lh-1">{{ Auth::guard('customerlogin')->user()->name }}</h4>
-                            <span class="text-muted smalls">Australia</span>
+                            <span class="text-muted smalls">{{ Auth::guard('customerlogin')->user()->country }}</span>
                         </div>
                     </div>
                     
                     <div class="dashboard_author">
                         <h4 class="px-3 py-2 mb-0 lh-2 gray fs-sm ft-medium text-muted text-uppercase text-left">Dashboard Navigation</h4>
                         <ul class="dahs_navbar">
-                            <li><a href="my-orders.html"><i class="lni lni-shopping-basket mr-2"></i>My Order</a></li>
+                            <li><a href="{{ route('customer.myorder') }}"><i class="lni lni-shopping-basket mr-2"></i>My Order</a></li>
                             <li><a href="wishlist.html"><i class="lni lni-heart mr-2"></i>Wishlist</a></li>
                             <li><a href="#0" class="active"><i class="lni lni-user mr-2"></i>Profile Info</a></li>
                             <li><a href="{{ route('customer.logout') }}"><i class="lni lni-power-switch mr-2"></i>Log Out</a></li>
@@ -73,6 +77,9 @@
                             <div class="form-group">
                                 <label class="small text-dark ft-medium">Current Password *</label>
                                 <input type="password" class="form-control" name="cpass" placeholder="Current Password" />
+                                @if(session('error'))
+                                    <strong><i>{{ session('error') }}</i></strong>
+                                @endif
                             </div>
                         </div>
                         
@@ -86,20 +93,20 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">
                                 <label class="small text-dark ft-medium">Country</label>
-                                <input type="text" class="form-control" name="country" placeholder="Country" />
+                                <input type="text" class="form-control" name="country" placeholder="{{ Auth::guard('customerlogin')->user()->country }}" value="{{ Auth::guard('customerlogin')->user()->country }}" />
                             </div>
                         </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                             <div class="form-group">
                                 <label class="small text-dark ft-medium">Phone</label>
-                                <input type="number" class="form-control" name="phone" placeholder="Phone" />
+                                <input type="number" class="form-control" name="mobile" placeholder="{{ Auth::guard('customerlogin')->user()->phone }}" value="{{ Auth::guard('customerlogin')->user()->phone }}" />
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                             <div class="form-group">
                                 <label class="small text-dark ft-medium">Address</label>
-                                <input type="text" class="form-control" name="address" placeholder="Address" />
+                                <input type="text" class="form-control" name="address" placeholder="{{ Auth::guard('customerlogin')->user()->address }}" value="{{ Auth::guard('customerlogin')->user()->address }}" />
                             </div>
                         </div>
 

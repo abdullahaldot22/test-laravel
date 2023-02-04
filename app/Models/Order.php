@@ -10,4 +10,8 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    function rel_to_customer() {
+        return $this->belongsTo(CustomerLogin::class, 'customer_id');
+    }
 }

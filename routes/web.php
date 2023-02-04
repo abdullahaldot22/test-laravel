@@ -14,6 +14,8 @@ use App\Http\Controllers\CustomerLoginController;
 use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\orderAdminController;
+use App\Http\Controllers\orderController;
 use App\HTTP\Controllers\subcategorycontroller;
 use App\Http\Controllers\WishListController;
 
@@ -36,6 +38,7 @@ Route::get('/login/user', [customerController::class, 'login_page'])->name('user
 Route::get('/user/cart/', [customerController::class, 'cart_page'])->name('cart.page')->middleware('customerlogin');
 Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page')->middleware('customerlogin');
 Route::get('/user/profile/', [customerController::class, 'customer_profile_page'])->name('customer.profile')->middleware('customerlogin');
+Route::get('/user/my_order/', [customerController::class, 'customer_order_page'])->name('customer.myorder')->middleware('customerlogin');
 
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
@@ -118,4 +121,6 @@ Route::post('/product/variation/color/store', [productcontroller::class, 'color_
 Route::post('/product/variation/size/store', [productcontroller::class, 'size_store'])->name('size.store');
 Route::get('/product/delete/{pro_id}', [productcontroller::class, 'product_delete'])->name('product.delete');
 
-
+// order --------------------------------------------------------
+Route::get('/customer/order_control', [orderAdminController::class, 'order_controller_page'])->name('customer.order');
+Route::post('/customer/order/status/update/', [orderAdminController::class, 'order_status_update'])->name('order.status.update');

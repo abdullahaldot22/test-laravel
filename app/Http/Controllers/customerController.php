@@ -10,6 +10,7 @@ use App\Models\CouponStore;
 use App\Models\inventory;
 use Illuminate\Http\Request;
 use App\Models\customerlogin;
+use App\Models\Order;
 use App\Models\State;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,6 +75,13 @@ class customerController extends Controller
 
     function customer_profile_page(){
         return view('frontend.profile_personal.customerProfile');
+    }
+
+    function customer_order_page(){
+        $orders = Order::where('customer_id', Auth::guard('customerlogin')->id())->where('delivery', null)->get();
+        return view('frontend.profile_personal.my_order', [
+            'orders' => $orders,
+        ]);
     }
 
     

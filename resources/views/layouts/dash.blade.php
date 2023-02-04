@@ -308,6 +308,7 @@
                                 </ul>
                             </li>
 							<li><a href="{{route('event.coupon')}}">Coupon</a></li>
+							<li><a href="{{route('customer.order')}}">Order</a></li>
 						</ul>
                     </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

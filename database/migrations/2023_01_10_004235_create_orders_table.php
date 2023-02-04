@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('charge')->nullable();
             $table->integer('payment_method');
             $table->integer('total');
+            $table->integer('status')->default(1);
+            $table->date('delivery');
             $table->timestamps();
         });
     }
