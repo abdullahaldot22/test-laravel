@@ -108,7 +108,13 @@ class checkoutController extends Controller
             return redirect('/');
         }
         elseif ($request->payment_method == 2) {
-            echo 'SSL';
+            $total = $request->sub_total + $request->charge_tg - $request->discount;
+            $all_data = $request->all();
+            return redirect('/pay')->with([
+                'data' => $all_data,
+                'total' => $total,
+                'order_id' => $order_str,
+            ]);
         }
         elseif ($request->paymene_method == 3) {
             echo 'Stripe';

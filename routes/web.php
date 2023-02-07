@@ -18,6 +18,7 @@ use App\Http\Controllers\orderAdminController;
 use App\Http\Controllers\orderController;
 use App\HTTP\Controllers\subcategorycontroller;
 use App\Http\Controllers\WishListController;
+use App\Http\Controllers\SslCommerzPaymentController;
 
 Auth::routes();
 
@@ -53,7 +54,7 @@ Route::get('/store/logout/customer', [CustomerLoginController::class, 'user_logo
 
 // cart----------------
 Route::post('/store/cart', [CartController::class, 'store_cart'])->name('store.cart');
-Route::get('/store/remove/cart/{cart_id}', [CartController::class, 'cart_remove'])->name('cart.remove');
+Route::get('/store/remove/cart/{cart_id}', [CartController::class, 'cart_remove'])->name('cart.remove')->middleware('customerlogin');
 Route::post('/store/update/cart', [CartController::class, 'cart_update'])->name('cart.product.update');
 
 // wish -----------------------------
@@ -61,7 +62,7 @@ Route::post('/store/wishlist', [WishListController::class, 'store_wish'])->name(
 Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishitm_remove'])->name('wishitm.remove');
 
 // checkout ------------------------------
-Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store');
+Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store')->middleware('customerlogin');
 
 // customer_profile_update --------------------------
 Route::post('/user/profile/update', [customerProfileController::class, 'customer_profile_update'])->name('customer.profile.update');
@@ -124,3 +125,18 @@ Route::get('/product/delete/{pro_id}', [productcontroller::class, 'product_delet
 // order --------------------------------------------------------
 Route::get('/customer/order_control', [orderAdminController::class, 'order_controller_page'])->name('customer.order');
 Route::post('/customer/order/status/update/', [orderAdminController::class, 'order_status_update'])->name('order.status.update');
+
+
+// SSLCOMMERZ Start
+// Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
+// Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
+
+Route::get('/pay', [SslCommerzPaymentController::class, 'index']);
+Route::get('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax'])->name('pay.card')->middleware('customerlogin');
+
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END

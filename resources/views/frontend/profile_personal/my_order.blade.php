@@ -117,7 +117,11 @@
                     </div>
                     <!-- End Order List -->
                 @empty
-                    
+                    <div style="width: 100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                        <h3 style="font-size: 18px; color: rgb(168, 168, 168);">
+                            You havent anything ordered yet
+                        </h3>
+                    </div>
                 @endforelse
                 
             </div>
