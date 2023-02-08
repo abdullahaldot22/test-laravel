@@ -95,12 +95,12 @@ class checkoutController extends Controller
                     'created_at'=>Carbon::now(),
                 ]);
 
-                // inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
+                inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
             }
             // $created_at = $order_product->created_at;
             // echo $created_at;
 
-            // CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
+            CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
 
 
             Mail::to($request->mail)->send(new MailInvoiceMail($order_str));
@@ -110,10 +110,20 @@ class checkoutController extends Controller
         elseif ($request->payment_method == 2) {
             $total = $request->sub_total + $request->charge_tg - $request->discount;
             $all_data = $request->all();
+
+            if($request->percentage == ''){
+                $so_data = $request->discount;}
+            else{
+                $so_data = $request->percentage;
+            }
+            $so_data;
+
             return redirect('/pay')->with([
                 'data' => $all_data,
                 'total' => $total,
                 'order_id' => $order_str,
+                'so_data' => $so_data,
+                'order_product' => $order_product,
             ]);
         }
         elseif ($request->paymene_method == 3) {

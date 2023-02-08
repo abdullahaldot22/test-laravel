@@ -3,9 +3,17 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\CartList;
+use App\Models\inventory;
+use App\Models\orderProduct;
 use Illuminate\Http\Request;
-use App\Library\SslCommerz\SslCommerzNotification;
+use App\Models\billingDetails;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Library\SslCommerz\SslCommerzNotification;
+use App\Mail\invoiceMail as MailInvoiceMail;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -182,11 +190,74 @@ class SslCommerzPaymentController extends Controller
     {
         echo "Transaction is Successful";
 
+        $data = session('data');
+        $total = session('total');
+        $order_id = session('order_id');
+        $so_data = session('so_data');
+        $customer_id = Auth::guard('customerlogin')->id();
+
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
         $currency = $request->input('currency');
 
         $sslc = new SslCommerzNotification();
+
+
+        Order::create([
+            'order_id' => $order_id,
+            'customer_id' => Auth::guard('customerlogin')->id(),
+            'phone' => $data['phone'],
+            'sub_total' => $data['sub_total'],
+            'discount' => $data['discount'],
+            'discount_amount' => $so_data,
+            'discount_method' => $data['method'],
+            'charge' => $data['charge_tg'],
+            'payment_method' => $data['payment_method'],
+            'total' => $total,
+            'created_at' => Carbon::now(),
+        ]);
+        
+        billingDetails::insert([
+            'order_id'=>$order_id,
+            'customer_id'=>Auth::guard('customerlogin')->id(),
+            'name'=>$data['name'],
+            'mail'=>$data['mail'],
+            'company'=>$data['company'],
+            'phone'=>$data['phone'],
+            'address'=>$data['address'],
+            'country_id'=>$data['country'],
+            'city_id'=>$data['city'],
+            'state_id'=>$data['state'],
+            'zip'=>$data['zip'],
+            'notes'=>$data['note'],
+            'created_at'=>Carbon::now(),
+        ]);
+        
+        $carts = CartList::where('customer_id', $customer_id)->get();
+        foreach ($carts as $cart) {
+            orderProduct::insert([
+                'order_id'=>$order_id,
+                'customer_id'=>Auth::guard('customerlogin')->id(),
+                'product_id'=>$cart->product_id,
+                'price'=>$cart->rel_to_product->after_discount,
+                'color_id'=>$cart->color_id,
+                'size_id'=>$cart->size_id,
+                'quantity'=>$cart->quantity,
+                'created_at'=>Carbon::now(),
+            ]);
+
+            inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
+        }
+        // $created_at = $order_product->created_at;
+        // echo $created_at;
+
+        CartList::where('customer_id', Auth::guard('customerlogin')->id())->delete();
+
+
+        Mail::to($data['mail'])->send(new MailInvoiceMail($order_id));
+
+        return redirect('/');
+
 
         #Check order status in order tabel against the transaction id or order id.
         $order_details = DB::table('sslorders')
