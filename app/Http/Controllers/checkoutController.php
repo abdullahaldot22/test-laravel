@@ -43,6 +43,7 @@ class checkoutController extends Controller
         $rand = substr($city->name, 0, 3);
         $order_str = '#'.Str::upper($rand).'-'.random_int(1000999, 999999999);
         $order_product = '';
+        $grand_total = $request->sub_total + $request->charge_tg - $request->discount;
 
         if($request->percentage == ''){
             $so_data = $request->discount;}
@@ -62,7 +63,7 @@ class checkoutController extends Controller
                 'discount_method' => $request->method,
                 'charge' => $request->charge_tg,
                 'payment_method' => $request->payment_method,
-                'total' => $request->sub_total + $request->charge_tg - $request->discount,
+                'total' => $grand_total,
                 'created_at' => Carbon::now(),
             ]);
             
@@ -105,17 +106,37 @@ class checkoutController extends Controller
 
             Mail::to($request->mail)->send(new MailInvoiceMail($order_str));
 
-            return redirect('/');
+            // send sms  ----------------------------------------------------------------------
+
+                                                    
+                // $url = "http://bulksmsbd.net/api/smsapi";
+                // $api_key = "gvLw5sSnEymkfY2aSNKY";
+                // $senderid = "abdullah";
+                // $number = $request->phone;
+                // $message = "Congratulation! your order has successfully been placed! your bill is - " . $grand_total;
+            
+                // $data = [
+                //     "api_key" => $api_key,
+                //     "senderid" => $senderid,
+                //     "number" => $number,
+                //     "message" => $message
+                // ];
+                // $ch = curl_init();
+                // curl_setopt($ch, CURLOPT_URL, $url);
+                // curl_setopt($ch, CURLOPT_POST, 1);
+                // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                // $response = curl_exec($ch);
+                // curl_close($ch);
+
+            // send sms  ----------------------------------------------------------------------
+
+            return route('success');
         }
         elseif ($request->payment_method == 2) {
             $total = $request->sub_total + $request->charge_tg - $request->discount;
             $all_data = $request->all();
-
-            if($request->percentage == ''){
-                $so_data = $request->discount;}
-            else{
-                $so_data = $request->percentage;
-            }
             $so_data;
 
             return redirect('/pay')->with([
@@ -126,8 +147,22 @@ class checkoutController extends Controller
                 'order_product' => $order_product,
             ]);
         }
-        elseif ($request->paymene_method == 3) {
-            echo 'Stripe';
+        elseif ($request->payment_method == 3) {
+
+            $total = $request->sub_total + $request->charge_tg - $request->discount;
+            $all_data = $request->all();
+            $so_data;
+
+            return redirect('stripe')->with([
+                'data' => $all_data,
+                'total' => $total,
+                'order_id' => $order_str,
+                'so_data' => $so_data,
+                'order_product' => $order_product,
+            ]);
+        }
+        else{
+            echo 'something went wrong';
         }
 
     }

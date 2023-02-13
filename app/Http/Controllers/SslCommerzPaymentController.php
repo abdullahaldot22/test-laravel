@@ -312,7 +312,7 @@ class SslCommerzPaymentController extends Controller
         } else {
             echo "Transaction is Invalid";
         }
-
+        return redirect('/error');
     }
 
     public function cancel(Request $request)

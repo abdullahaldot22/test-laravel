@@ -1,23 +1,24 @@
 <?php
 
-use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\usercontroller;
+use App\Http\Controllers\orderController;
+use App\Http\Controllers\CouponController;
 use App\HTTP\Controllers\productcontroller;
 use App\HTTP\Controllers\CategoryController;
 use App\Http\Controllers\checkoutController;
-use App\Http\Controllers\CouponController;
 use App\Http\Controllers\customerController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\WishListController;
+use App\Http\Controllers\orderAdminController;
+use App\HTTP\Controllers\subcategorycontroller;
 use App\Http\Controllers\CustomerLoginController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\orderAdminController;
-use App\Http\Controllers\orderController;
-use App\HTTP\Controllers\subcategorycontroller;
-use App\Http\Controllers\WishListController;
 use App\Http\Controllers\SslCommerzPaymentController;
 
 Auth::routes();
@@ -40,6 +41,8 @@ Route::get('/user/cart/', [customerController::class, 'cart_page'])->name('cart.
 Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page')->middleware('customerlogin');
 Route::get('/user/profile/', [customerController::class, 'customer_profile_page'])->name('customer.profile')->middleware('customerlogin');
 Route::get('/user/my_order/', [customerController::class, 'customer_order_page'])->name('customer.myorder')->middleware('customerlogin');
+Route::get('/success', [customerController::class, 'customer_order_success'])->name('success')->middleware('customerlogin');
+Route::get('/error', [customerController::class, 'error_page'])->name('error')->middleware('customerlogin');
 
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
@@ -74,6 +77,12 @@ Route::post('/user/profile/update', [customerProfileController::class, 'customer
 Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
 
 
+// stripe ---------------------------------------------------
+Route::controller(StripePaymentController::class)->group(function(){
+    Route::get('stripe', 'stripe')->name('stripe');
+    Route::post('stripe', 'stripePost')->name('stripe.post');
+});
+// stripe ---------------------------------------------------
 
 
 
@@ -140,3 +149,4 @@ Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
 Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 //SSLCOMMERZ END
+

@@ -84,5 +84,12 @@ class customerController extends Controller
         ]);
     }
 
+    function customer_order_success() {
+        return view('frontend.message.success');
+    }
+
+    function error_page() {
+        return view('frontend.message.404');
+    }
     
 }
