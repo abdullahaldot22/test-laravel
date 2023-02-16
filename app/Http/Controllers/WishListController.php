@@ -12,8 +12,8 @@ class WishListController extends Controller
 
     function store_wish(Request $request) {
         if (Auth::guard('customerlogin')->check()) {
-
-            if ($request->color_id == null || $request->ordr_quantity == null || $request->size_id == null || ($request->color_id == null && $request->size_id == null && $request->ordr_quantity == null)) {
+            if ($request->color_id == null || $request->quantity == null || $request->size_id == null ) {
+                // return $request->all();
                 $request->validate([
                     'color_id'=>'required',
                     'size_id'=>'required',
@@ -23,12 +23,14 @@ class WishListController extends Controller
                     'size_id.required' => 'Size must selected.',
                     'quantity.required' => 'Quantity is necessary.',
                 ]);
-                // return back()->with('pinfo_err', 'Colour, Size or Quantity input missing! ');
+                return back();
+                // echo 'input missing';
             }
             else{
-                if (WishList::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->exists()) {
-                    WishList::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->increment('quantity', $request->quantity);
+                if (WishList::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->exists()) {
+                    WishList::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->increment('quantity', $request->quantity);
                     return back()->with('store_message', 'Increased to Your cart successfully!');
+                    echo 'found didnt increased';
                 }
                 else {
                     WishList::insert([
@@ -39,6 +41,7 @@ class WishListController extends Controller
                         'quantity'=>$request->quantity,
                         'created_at'=>Carbon::now(),
                     ]);
+                    echo 'didnt insert';
                     return back()->with('store_message', 'Added to Your Wish-List successfully!');
                 }
             }

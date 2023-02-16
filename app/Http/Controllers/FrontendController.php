@@ -65,8 +65,13 @@ class FrontendController extends Controller
     function getavQuantity(Request $request){
         $quantity = inventory::where('product_id', $request->pro_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->get()->first()->quantity;
         $found = '';
-        for ($i=1; $i <= $quantity; $i++) { 
-            $found .=  '<option value="'.$i.'">'.$i.'</option>';
+        if($quantity == null){
+            $found .= '<option value=""> - </option>';
+        }
+        else{
+            for ($i=1; $i <= $quantity; $i++) { 
+                $found .=  '<option value="'.$i.'">'.$i.'</option>';
+            }
         }
         echo $found;
     }
