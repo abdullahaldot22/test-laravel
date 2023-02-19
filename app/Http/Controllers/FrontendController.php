@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Str;
+use App\Models\product;
 use App\Models\category;
 use App\Models\inventory;
-use App\Models\product;
-use App\Models\subcategory;
 use App\Models\thumbnail;
+use App\Models\subcategory;
+use App\Models\orderProduct;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
-use Str;
+use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {
@@ -38,6 +40,16 @@ class FrontendController extends Controller
         $releted_product = product::where('subcategory_id', $pro_info->first()->subcategory_id)->where('id', '!=', $pro_info->first()->id)->get();
         $in_color = inventory::where('product_id', $pro_info->first()->id)->groupBy('color_id')->selectRaw('sum(color_id) as sum, color_id')->get('sum','color_id');
         $in_size = inventory::where('product_id', $pro_info->first()->id)->groupBy('size_id')->selectRaw('sum(size_id) as sum, size_id')->get('sum','size_id');
+        $review = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->get();
+
+        $star_sum = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->sum('star');
+        if(count($review)<1){
+            $avg_star = 0;
+        }
+        else{
+            $avg_star = $star_sum/count($review);
+        }
+        
      
         return view('frontend.product.details', [
             'pro_info'=>$pro_info,
@@ -45,6 +57,8 @@ class FrontendController extends Controller
             'sim_pro'=>$releted_product,
             'av_color'=>$in_color,
             'av_size'=>$in_size,
+            'reviews'=>$review,
+            'avg_star'=>$avg_star,
         ]);
     }
 
@@ -69,7 +83,13 @@ class FrontendController extends Controller
             $found .= '<option value=""> - </option>';
         }
         else{
-            for ($i=1; $i <= $quantity; $i++) { 
+            if($quantity >= 8){
+                $data = 8;
+            }
+            else{
+                $data = $quantity;
+            }
+            for ($i=1; $i <= $data; $i++) { 
                 $found .=  '<option value="'.$i.'">'.$i.'</option>';
             }
         }
@@ -78,5 +98,18 @@ class FrontendController extends Controller
 
     function invoice_check(){
         return view('mail.orderInvoice');
+    }
+
+    function add_product_review(Request $request, $product_id) {
+        if (orderProduct::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $product_id)->whereNotNull('review')->exists()) {
+            return back();
+        }
+        else {
+            orderProduct::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $product_id)->first()->update([
+                'review' => $request->review,
+                'star' => $request->rating,
+            ]);
+        }
+        return back();
     }
 }

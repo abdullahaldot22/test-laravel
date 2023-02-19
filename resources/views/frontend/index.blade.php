@@ -141,11 +141,21 @@
                                 <div class="elso_titl"><span class="small">{{ $pro->rel_scat->subcategory_name }}</span></div>
                                 <h5 class="fs-md mb-0 lh-1 mb-1"><a href="{{ route('product.details', $pro->slug) }}">{{ $pro->product_name }}</a></h5>
                                 <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
+                                    {{-- @php
+                                        $avg_star = $pro->rel_orderproduct->find($pro->id);
+                                        print_r($avg_star);
+                                    @endphp --}}
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star filled"></i>
                                     <i class="fas fa-star"></i>
+                                    {{-- @for ($i=1; $i<=$avg_star; $i++)
+                                        <i class="fas fa-star filled"></i>
+                                    @endfor
+                                    @for ($i=1; $i<=5-$avg_star; $i++)
+                                        <i class="fas fa-star"></i>
+                                    @endfor --}}
                                 </div>
                                 <div class="elis_rty">
                                     @if($pro->discount > 0)

@@ -91,5 +91,9 @@ class customerController extends Controller
     function error_page() {
         return view('frontend.message.404');
     }
+
+    function customer_wish_page() {
+        return view('frontend.profile_personal.wishlist');
+    }
     
 }

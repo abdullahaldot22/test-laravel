@@ -41,6 +41,7 @@ Route::get('/user/cart/', [customerController::class, 'cart_page'])->name('cart.
 Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->name('checkout.page')->middleware('customerlogin');
 Route::get('/user/profile/', [customerController::class, 'customer_profile_page'])->name('customer.profile')->middleware('customerlogin');
 Route::get('/user/my_order/', [customerController::class, 'customer_order_page'])->name('customer.myorder')->middleware('customerlogin');
+Route::get('/user/my_wishlist/', [customerController::class, 'customer_wish_page'])->name('customer.wishlist')->middleware('customerlogin');
 Route::get('/success', [customerController::class, 'customer_order_success'])->name('success')->middleware('customerlogin');
 Route::get('/error', [customerController::class, 'error_page'])->name('error')->middleware('customerlogin');
 
@@ -70,7 +71,8 @@ Route::post('/order/store', [checkoutController::class, 'order_store'])->name('o
 // customer_profile_update --------------------------
 Route::post('/user/profile/update', [customerProfileController::class, 'customer_profile_update'])->name('customer.profile.update');
 
-
+// user review -------------------------------------------------
+Route::post('/user/add/review/{product_id}', [FrontendController::class, 'add_product_review'])->name('user.review');
 
 // mail check ----------------------------------------------
 
