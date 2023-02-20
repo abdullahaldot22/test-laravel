@@ -17,7 +17,4 @@ class product extends Model
     function rel_scat() {
         return $this->belongsTo(subcategory::class, 'subcategory_id');
     }
-    // function rel_orderproduct() {
-    //     return $this->hasMany(orderProduct::class);
-    // }
 }

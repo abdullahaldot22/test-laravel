@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\customerlogin;
 use App\Models\Order;
 use App\Models\State;
+use App\Models\WishList;
 use Illuminate\Support\Facades\Auth;
 
 class customerController extends Controller
@@ -93,7 +94,10 @@ class customerController extends Controller
     }
 
     function customer_wish_page() {
-        return view('frontend.profile_personal.wishlist');
+        $wishes = WishList::where('customer_id', Auth::guard('customerlogin')->id())->get();
+        return view('frontend.profile_personal.wishlist', [
+            'wishes' => $wishes,
+        ]);
     }
     
 }

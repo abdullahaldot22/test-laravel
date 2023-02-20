@@ -438,7 +438,7 @@
 			
 			<div class="cart_action px-3 py-3">
 				<div class="form-group">
-					<button type="button" class="btn d-block full-width btn-dark-light">View Whishlist</button>
+					<a href="{{ route('customer.wishlist') }}" type="button" class="btn d-block full-width btn-dark-light">View Whishlist</a>
 				</div>
 			</div>
 			
@@ -462,24 +462,27 @@
 				@endphp
 				<!-- Single Item -->
 				@foreach (App\Models\CartList::where('customer_id', Auth::guard('customerlogin')->id())->get() as $itm)
-				
-					<div class="d-flex align-items-center justify-content-between br-bottom px-3 py-3">
-						<div class="cart_single d-flex align-items-center">
-							<div class="cart_selected_single_thumb">
-								<a href="#"><img src="{{ asset('uploads/product/preview') }}/{{ $itm->rel_to_product->preview }}" width="60" class="img-fluid" alt="" /></a>
+					@if($itm->rel_to_product != null)
+						<div class="d-flex align-items-center justify-content-between br-bottom px-3 py-3">
+							<div class="cart_single d-flex align-items-center">
+								<div class="cart_selected_single_thumb">
+									<a href="#"><img src="{{ asset('uploads/product/preview') }}/{{ $itm->rel_to_product->preview }}" width="60" class="img-fluid" alt="" /></a>
+								</div>
+								<div class="cart_single_caption pl-2">
+									<h4 class="product_title fs-sm ft-medium mb-0 lh-1">{{ $itm->rel_to_product->product_name }}</h4>
+									<p class="mb-2"><span class="text-dark ft-medium small">{{ $itm->rel_to_size->product_size }}</span>, <span class="text-dark small">{{ $itm->color_id==null?'NA':$itm->rel_to_color->color_name }}</span></p>
+									<h4 class="fs-md ft-medium mb-0 lh-1">&#2547;{{ $itm->rel_to_product->after_discount }} X {{ $itm->quantity }}</h4>
+								</div>
 							</div>
-							<div class="cart_single_caption pl-2">
-								<h4 class="product_title fs-sm ft-medium mb-0 lh-1">{{ $itm->rel_to_product->product_name }}</h4>
-								<p class="mb-2"><span class="text-dark ft-medium small">{{ $itm->rel_to_size->product_size }}</span>, <span class="text-dark small">{{ $itm->color_id==null?'NA':$itm->rel_to_color->color_name }}</span></p>
-								<h4 class="fs-md ft-medium mb-0 lh-1">&#2547;{{ $itm->rel_to_product->after_discount }} X {{ $itm->quantity }}</h4>
-							</div>
+							<div class="fls_last"><a href="{{ route('cart.remove', $itm->id) }}" class="close_slide gray"><i class="ti-close"></i></a></div>
 						</div>
-						<div class="fls_last"><a href="{{ route('cart.remove', $itm->id) }}" class="close_slide gray"><i class="ti-close"></i></a></div>
-					</div>
+						@php
+							$sub_total += $itm->rel_to_product->after_discount*$itm->quantity;
+						@endphp
+					@else
+						<div class="d-flex align-content-center justify-content-center w-100">it was removed</div>
+					@endif
 				
-					@php
-						$sub_total += $itm->rel_to_product->after_discount*$itm->quantity;
-					@endphp
 				@endforeach
 				
 			</div>

@@ -63,7 +63,7 @@ Route::post('/store/update/cart', [CartController::class, 'cart_update'])->name(
 
 // wish -----------------------------
 Route::post('/store/wishlist', [WishListController::class, 'store_wish'])->name('store.wishlist');
-Route::get('/store/remove/wishitm/{cart_id}', [WishListController::class, 'wishitm_remove'])->name('wishitm.remove');
+Route::get('/store/remove/wishitm/{wish_id}', [WishListController::class, 'wishitm_remove'])->name('wishitm.remove');
 
 // checkout ------------------------------
 Route::post('/order/store', [checkoutController::class, 'order_store'])->name('order.store')->middleware('customerlogin');

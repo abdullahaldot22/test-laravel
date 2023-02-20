@@ -57,109 +57,35 @@
             <div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
                 <!-- row -->
                 <div class="row align-items-center">
-                
-                    <!-- Single -->
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                        <div class="product_grid card b-0">
-                            <div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-                            <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button> 
-                            <div class="card-body p-0">
-                                <div class="shop_thumb position-relative">
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/product/1.jpg" alt="..."></a>
-                                </div>
-                            </div>
-                            <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
-                                <div class="text-left">
-                                    <div class="text-center">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Half Running Set</a></h5>
-                                        <div class="elis_rty"><span class="ft-bold fs-md text-dark">$119.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     
-                    <!-- Single -->
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                        <div class="product_grid card b-0">
-                            <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-                            <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button> 
-                            <div class="card-body p-0">
-                                <div class="shop_thumb position-relative">
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/product/2.jpg" alt="..."></a>
+                    @forelse($wishes as $wish)
+                        <!-- Single -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                            <div class="product_grid card b-0">
+                                <a href="{{ route('wishitm.remove', $wish->id) }}" class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></a> 
+                                <div class="card-body p-0">
+                                    <div class="shop_thumb position-relative">
+                                        <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="{{ asset('uploads/product/preview') }}/{{ $wish->rel_to_product->preview }}" alt="..."></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
-                                <div class="text-left">
-                                    <div class="text-center">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Formal Men Lowers</a></h5>
-                                        <div class="elis_rty"><span class="text-muted ft-medium line-through mr-2">$129.00</span><span class="ft-bold theme-cl fs-md">$79.00</span></div>
+                                <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
+                                    <div class="text-left">
+                                        <div class="text-center">
+                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">{{ $wish->rel_to_product->product_name }}</a></h5>
+                                            <div class="elis_rty">
+                                                @if($wish->rel_to_product->discount != 0)
+                                                    <span class="text-muted ft-medium line-through mr-2">&#2547; {{ $wish->rel_to_product->price }}</span>
+                                                @endif
+                                                <span class="ft-bold theme-cl fs-md">&#2547; {{ number_format($wish->rel_to_product->after_discount) }}</span></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Single -->
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                        <div class="product_grid card b-0">
-                            <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button> 
-                            <div class="card-body p-0">
-                                <div class="shop_thumb position-relative">
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/product/3.jpg" alt="..."></a>
-                                </div>
-                            </div>
-                            <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
-                                <div class="text-left">
-                                    <div class="text-center">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Half Running Suit</a></h5>
-                                        <div class="elis_rty"><span class="ft-bold fs-md text-dark">$80.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Single -->
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                        <div class="product_grid card b-0">
-                            <div class="badge bg-warning text-white position-absolute ft-regular ab-left text-upper">Hot</div>
-                            <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button>  
-                            <div class="card-body p-0">
-                                <div class="shop_thumb position-relative">
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/product/4.jpg" alt="..."></a>
-                                </div>
-                            </div>
-                            <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
-                                <div class="text-left">
-                                    <div class="text-center">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Half Fancy Lady Dress</a></h5>
-                                        <div class="elis_rty"><span class="text-muted ft-medium line-through mr-2">$149.00</span><span class="ft-bold theme-cl fs-md">$110.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Single -->
-                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                        <div class="product_grid card b-0">
-                            <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button> 
-                            <div class="card-body p-0">
-                                <div class="shop_thumb position-relative">
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/product/5.jpg" alt="..."></a>
-                                </div>
-                            </div>
-                            <div class="card-footers b-0 pt-3 px-2 bg-white d-flex align-items-start justify-content-center">
-                                <div class="text-left">
-                                    <div class="text-center">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Flix Flox Jeans</a></h5>
-                                        <div class="elis_rty"><span class="text-muted ft-medium line-through mr-2">$90.00</span><span class="ft-bold theme-cl fs-md">$49.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        
+                    @empty
+                        <div class="text-dark d-flex justify-content-center w-100 h-100 text-bold align-items-center"><b><i style="font-size: 24px; opacity: 0.2;">No wished product found</i></b></div>
+                    @endforelse
                     
                 </div>
                 <!-- row -->

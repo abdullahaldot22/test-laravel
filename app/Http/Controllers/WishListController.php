@@ -51,8 +51,8 @@ class WishListController extends Controller
         }
     }
 
-    function wishitm_remove($cart_id) {
-        WishList::find($cart_id)->delete();
+    function wishitm_remove($wish_id) {
+        WishList::find($wish_id)->delete();
         return back();
     }
 }

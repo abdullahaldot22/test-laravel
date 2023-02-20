@@ -53,7 +53,11 @@
 											@endfor
 											<span class="small">({{ count($reviews) }} Reviews)</span>
 										</div>
-										<div class="elis_rty"><span class="ft-medium text-muted line-through fs-md mr-2">&#2547;{{ $pro_info->first()->price }}</span><span class="ft-bold theme-cl fs-lg mr-2">&#2547;{{ $pro_info->first()->after_discount }}</span></div>
+										<div class="elis_rty">
+											@if($pro_info->first()->discount != 0)
+												<span class="ft-medium text-muted line-through fs-md mr-2">&#2547; {{ $pro_info->first()->price }}</span>
+											@endif
+											<span class="ft-bold theme-cl fs-lg mr-2">&#2547; {{ number_format($pro_info->first()->after_discount) }}</span></div>
 									</div>
 								</div>
 								
@@ -221,26 +225,29 @@
 								<div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
 									<div class="reviews_info">
 										@forelse ($reviews as $review)
-											<div class="single_rev d-flex align-items-start br-bottom py-3">
-												<div class="single_rev_thumb"><img src="{{ asset('uploads/customer')}}/{{ $review->rel_to_customer->profile_image }}" class="img-fluid circle" width="40" alt="" /></div>
-												<div class="single_rev_caption d-flex align-items-start justify-content-between w-100 pl-3">
-													<div class="single_capt_left">
-														<h5 class="mb-0 fs-md ft-medium lh-1">{{ $review->rel_to_customer->name }}</h5>
-														<span class="small">{{ $review->updated_at->format('d M, Y') }}</span>
-														<p>{{ $review->review }}</p>
-													</div>
-													<div class="single_capt_right">
-														<div class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-															@for ($i=1; $i<=$review->star; $i++)
-																<i class="fas fa-star filled"></i>
-															@endfor
-															@for ($i=1; $i<=5-$review->star; $i++)
-																<i class="fas fa-star"></i>
-															@endfor
+											@if($review->rel_to_customer != null)
+												<div class="single_rev d-flex align-items-start br-bottom py-3">
+													<div class="single_rev_thumb"><img src="{{ asset('uploads/customer')}}/{{ $review->rel_to_customer->profile_image }}" class="img-fluid circle" width="40" alt="" /></div>
+													<div class="single_rev_caption d-flex align-items-start justify-content-between w-100 pl-3">
+														<div class="single_capt_left">
+															<h5 class="mb-0 fs-md ft-medium lh-1">{{ $review->rel_to_customer->name }}</h5>
+															<span class="small">{{ $review->updated_at->format('d M, Y') }}</span>
+															<p>{{ $review->review }}</p>
+														</div>
+														<div class="single_capt_right">
+															<div class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+																@for ($i=1; $i<=$review->star; $i++)
+																	<i class="fas fa-star filled"></i>
+																@endfor
+																@for ($i=1; $i<=5-$review->star; $i++)
+																	<i class="fas fa-star"></i>
+																@endfor
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
+												
+											@endif
 										@empty
 											<div class="alert alert-danger text-dark d-flex justify-content-center align-items-center">No review found</div>
 										@endforelse
