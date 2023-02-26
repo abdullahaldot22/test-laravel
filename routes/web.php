@@ -43,7 +43,9 @@ Route::get('/user/profile/', [customerController::class, 'customer_profile_page'
 Route::get('/user/my_order/', [customerController::class, 'customer_order_page'])->name('customer.myorder')->middleware('customerlogin');
 Route::get('/user/my_wishlist/', [customerController::class, 'customer_wish_page'])->name('customer.wishlist')->middleware('customerlogin');
 Route::get('/success', [customerController::class, 'customer_order_success'])->name('success')->middleware('customerlogin');
-Route::get('/error', [customerController::class, 'error_page'])->name('error')->middleware('customerlogin');
+Route::get('/error', [customerController::class, 'error_page'])->name('error');
+Route::get('/customer/reset/password', [customerController::class, 'pass_reset_page'])->name('password.reset.page');
+Route::get('/customer/reset/password/form/{token}', [customerController::class, 'pass_reset_form_page'])->name('password.reset.form.page');
 
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
@@ -74,9 +76,13 @@ Route::post('/user/profile/update', [customerProfileController::class, 'customer
 // user review -------------------------------------------------
 Route::post('/user/add/review/{product_id}', [FrontendController::class, 'add_product_review'])->name('user.review');
 
+// password Reset -------------------------------------------------
+Route::post('/cpass/reset/request', [CustomerLoginController::class, 'cpass_reset_request'])->name('customer.password.reset.request');
+Route::post('/password/set', [CustomerLoginController::class, 'password_set'])->name('customer.password.set');
+
 // mail check ----------------------------------------------
 
-Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
+// Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
 
 
 // stripe ---------------------------------------------------

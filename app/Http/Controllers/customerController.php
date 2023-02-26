@@ -99,5 +99,15 @@ class customerController extends Controller
             'wishes' => $wishes,
         ]);
     }
+
+    function pass_reset_page() {
+        return view('frontend.register&login.pass_reset');
+    }
+
+    function pass_reset_form_page($token) {
+        return view('frontend.register&login.pass_reset_form', [
+            'token' => $token,
+        ]);
+    }
     
 }
