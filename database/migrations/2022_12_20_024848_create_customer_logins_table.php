@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('country')->nullable();
             $table->string('profile_image')->nullable();
+            $table->timestamp('email_verify_at')->nullable();
             $table->timestamps();
         });
     }

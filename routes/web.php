@@ -47,6 +47,7 @@ Route::get('/error', [customerController::class, 'error_page'])->name('error');
 Route::get('/customer/reset/password', [customerController::class, 'pass_reset_page'])->name('password.reset.page');
 Route::get('/customer/reset/password/form/{token}', [customerController::class, 'pass_reset_form_page'])->name('password.reset.form.page');
 
+
 // ------------------ frontend process
 Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getavQuantity', [FrontendController::class, 'getavQuantity']);
@@ -79,6 +80,9 @@ Route::post('/user/add/review/{product_id}', [FrontendController::class, 'add_pr
 // password Reset -------------------------------------------------
 Route::post('/cpass/reset/request', [CustomerLoginController::class, 'cpass_reset_request'])->name('customer.password.reset.request');
 Route::post('/password/set', [CustomerLoginController::class, 'password_set'])->name('customer.password.set');
+
+// customer mail verification ---------------------------------------------
+Route::get('/customer/verification/email/{token}', [CustomerLoginController::class, 'customer_email_verify_page'])->name('customer.email.verification');
 
 // mail check ----------------------------------------------
 

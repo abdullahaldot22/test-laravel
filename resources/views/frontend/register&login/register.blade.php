@@ -61,8 +61,8 @@
                         <div class="mb-3">
                             <h3>Register</h3>
                         </div>
-                        @if (session('success_reg'))
-                            <div class="alert alert-success">{{ session('success_reg') }}</div>
+                        @if (session('reg_message'))
+                            <div class="alert alert-success">{{ session('reg_message') }}</div>
                         @endif
                         <form action="{{ route('customer.register.store') }}" method="POST" class="border p-3 rounded">
                             @csrf
