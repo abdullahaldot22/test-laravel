@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Str;
 use App\Models\product;
 use App\Models\category;
+use App\Models\color;
 use App\Models\inventory;
 use App\Models\thumbnail;
 use App\Models\subcategory;
 use App\Models\orderProduct;
+use App\Models\size;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
 use Illuminate\Support\Facades\Auth;
@@ -43,6 +45,7 @@ class FrontendController extends Controller
         $review = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->get();
 
         $star_sum = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->sum('star');
+        
         if(count($review)<1){
             $avg_star = 0;
         }
@@ -111,5 +114,57 @@ class FrontendController extends Controller
             ]);
         }
         return back();
+    }
+
+    function product_search(Request $request) {
+        $data = $request->all();
+        $products_search = product::where(function ($q) use ($data){
+            $min_price = 0;
+            if(!empty($data['minprice']) && $data['minprice'] != '' && $data['minprice']){
+                $min_price = $data['minprice'];
+            }
+            else{
+                $min_price = 1;
+            }
+
+            if(!empty($data['keyword']) && $data['keyword'] != '' && $data['keyword'] != 'undefined'){
+                $q->where(function ($q) use ($data){
+                    $q->where('product_name', 'like', '%'. $data['keyword'] . '%');
+                    $q->orWhere('long_description', 'like', '%'. $data['keyword'] . '%');
+                });
+            }
+            if(!empty($data['category']) && $data['category'] != '' && $data['category'] != 'undefined'){
+                $q->where(function ($q) use ($data){
+                    $q->where('category_id', $data['category']);
+                });
+            }
+            if(!empty($data['minprice']) && $data['minprice'] != '' && $data['minprice'] != 'undefined' || !empty($data['maxprice']) && $data['maxprice'] != '' && $data['maxprice'] != 'undefined'){
+                $q->whereBetween('after_discount', [$min_price, $data['maxprice']]);
+            }
+            if(!empty($data['color']) && $data['color'] != '' && $data['color'] != 'undefined' || !empty($data['size']) && $data['size'] != '' && $data['size'] != 'undefined'){
+                $q->whereHas('rel_to_inventory',function ($q) use ($data){
+                    if (!empty($data['color']) && $data['color'] != '' && $data['color'] != 'undefined') {
+                        $q->whereHas('rel_color', function ($q) use ($data){
+                            $q->where('colors.id', $data['color']);
+                        });
+                    }
+                    if (!empty($data['size']) && $data['size'] != '' && $data['size'] != 'undefined') {
+                        $q->whereHas('rel_size', function ($q) use ($data){
+                            $q->where('sizes.id', $data['size']);
+                        });
+                    }
+                });
+            }
+        })->get();
+        $categories = category::all();
+        $colors = color::all();
+        $sizes = size::all();
+
+        return view('frontend.product.shop_search', [
+            'products' => $products_search,
+            'categories' => $categories,
+            'colors' => $colors,
+            'sizes' => $sizes,
+        ]);
     }
 }

@@ -34,9 +34,22 @@
 			border: 2px solid #919191;
 			border-radius: 9px;
 			padding: 8px 14px;
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: center;
+		}
+		.usr-block .name{
+			font-weight: 500;
+		}
+		.usr-block img{
+			margin-left: 16px;
+			width: 34px;
 		}
 		.usr-block i{
-			padding-left: 6px;
+			padding-left: 16px;
+			line-height: 28px;
+			font-size: 16px;
 		}
 		.slick-dots{
 			margin-bottom: -35px;
@@ -81,6 +94,20 @@
 		.form-control::-webkit-input-placeholder {
 			color: #777777b6;
 		}
+		.color_id:checked~.form-option-label {
+			border-color: #121212;
+			color: #121212;
+		}
+		.size_id:checked~.form-option-label {
+			border-color: #121212;
+			color: #121212;
+		}
+		.form-control.reset{
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+			justify-content: center;
+		}
 	</style>
 
 <!-- ============================================================== -->
@@ -124,7 +151,12 @@
 					@auth('customerlogin')
 						<div class="dropdown">
 							<a class="usr-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{{ Auth::guard('customerlogin')->user()->name }} <i style="" class="fa-solid fa-user"></i>
+								<div class="name">{{ Auth::guard('customerlogin')->user()->name }}</div> 
+								@if(Auth::guard('customerlogin')->user()->profile_image != null && Auth::guard('customerlogin')->user()->profile_image != '' && Auth::guard('customerlogin')->user()->profile_image != 'undefined')
+									<img src="{{ asset('uploads/customer') }}/{{ Auth::guard('customerlogin')->user()->profile_image }}" alt="">
+								@else
+									<i class="fa-solid fa-user"></i>
+								@endif
 							</a>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							  <a class="dropdown-item" href="{{ route('customer.profile') }}">Profile</a>
@@ -155,9 +187,9 @@
 						<div class="headd-sty-02 ml-3">
 							<form class="bg-white rounded-md border-bold">
 								<div class="input-group">
-									<input type="text" class="form-control custom-height b-0" placeholder="Search for products..." />
+									<input type="text" id="search_input" class="form-control custom-height b-0" placeholder="Search for products..." />
 									<div class="input-group-append">
-										<div class="input-group-text"><button class="btn bg-white text-danger custom-height rounded px-3" type="button"><i class="fas fa-search"></i></button></div>
+										<div class="input-group-text"><button id="search_btn" class="btn bg-white text-danger custom-height rounded px-3" type="button"><i class="fas fa-search"></i></button></div>
 									</div>
 								</div>
 							</form>

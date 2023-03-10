@@ -46,6 +46,7 @@ Route::get('/success', [customerController::class, 'customer_order_success'])->n
 Route::get('/error', [customerController::class, 'error_page'])->name('error');
 Route::get('/customer/reset/password', [customerController::class, 'pass_reset_page'])->name('password.reset.page');
 Route::get('/customer/reset/password/form/{token}', [customerController::class, 'pass_reset_form_page'])->name('password.reset.form.page');
+Route::get('/product/search', [FrontendController::class, 'product_search'])->name('product.shop_search');
 
 
 // ------------------ frontend process
