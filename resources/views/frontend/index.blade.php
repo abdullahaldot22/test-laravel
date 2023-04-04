@@ -373,75 +373,45 @@
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                 <div class="top-seller-title"><h4 class="ft-medium">Top Seller</h4></div>
                 <div class="ftr-content">
-                
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/1.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">Mobiles</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Zoomio iPhones</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$99 - $129</span></div>
-                            </div>
-                        </div>
-                    </div>
+                    @foreach($top_selling_product as $val)
                     
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/2.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">TV/LED</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">32 Inch Smart LED</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
+                        <!-- Single Item -->
+                        <div class="product_grid row">
+                            <div class="col-xl-4 col-lg-5 col-md-5 col-4">
+                                <div class="shop_thumb position-relative">
+                                    <a class="card-img-top d-block overflow-hidden" href="{{ route('product.details', $val->rel_to_product->slug) }}"><img class="card-img-top" src="{{ asset('uploads/product/preview') }}/{{ $val->rel_to_product->preview }}" alt="..."></a>
                                 </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$799 - $1200</span></div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/10.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">Headphone</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Ziomi Headphone</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
+                            <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
+                                <div class="text-left mfliud">
+                                    <div class="elso_titl"><span class="small">{{ $val->rel_to_product->rel_cat->category_name }}</span></div>
+                                    <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="{{ route('product.details', $val->rel_to_product->slug) }}">{{ $val->rel_to_product->product_name }}</a></h5>
+
+                                    @php
+                                        $star = App\Models\orderProduct::where('product_id', $val->product_id)->whereNotNull('review')->sum('star');
+                                        $review = App\Models\orderProduct::where('product_id', $val->product_id)->whereNotNull('review')->get()->count();
+                                        $avg = 0;
+                                        if($review == 0){
+                                            $avg = 0;
+                                        }else {
+                                            $avg = $star / $review;
+                                        }
+                                    @endphp
+
+                                    <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
+                                        @for($i = 0; $i < $avg; $i++)
+                                            <i class="fas fa-star filled"></i>
+                                        @endfor
+                                        @for($i = 0; $i < 5-$avg; $i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
+                                    </div>
+                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">${{ $val->rel_to_product->after_discount }}</span></div>
                                 </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$49 - $110</span></div>
                             </div>
                         </div>
-                    </div>
+
+                    @endforeach
                     
                 </div>
             </div>

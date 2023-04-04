@@ -65,18 +65,21 @@
 										<div class="widget-boxed-body collapse show" id="pricing" data-parent="#pricing">
 											<div class="row">
 												<div class="col-lg-6 pr-1">
+													@php
+														
+													@endphp
 													<div class="form-group pl-3">
-														<input type="number" class="form-control min-price" placeholder="Min">
+														<input type="number" class="form-control min-price" placeholder="{{ @$_GET['minprice'] == 'undefined' || @$_GET['minprice'] == '' ? 'Min' : @$_GET['minprice'] }}">
 													</div>
 												</div>
 												<div class="col-lg-6 pl-1">
 													<div class="form-group pr-3">
-														<input type="number" class="form-control max-price" placeholder="Max">
+														<input type="number" class="form-control max-price" placeholder="{{ @$_GET['maxprice'] == 'undefined' || @$_GET['maxprice'] == '' ? 'Max' : @$_GET['maxprice'] }}">
 													</div>
 												</div>
 												<div class="col-lg-12">
 													<div class="form-group px-3">
-														<button type="submit" class="btn form-control">Submit</button>
+														<button type="submit" class="btn form-control price_range">Submit</button>
 													</div>
 												</div>
 											</div>
@@ -98,7 +101,7 @@
                                                                 @foreach($categories as $category)
                 
                                                                     <li>
-                                                                        <input id="category{{ $category->id }}" class="category_id" name="category" value="{{ $category->id }}" type="radio">
+                                                                        <input {{ @$_GET['category'] == $category->id ? 'checked' : '' }} id="category{{ $category->id }}" class="category_id" name="category" value="{{ $category->id }}" type="radio">
                                                                         <label for="category{{ $category->id }}" class="checkbox-custom-label">{{ $category->category_name }}<span>{{ App\Models\product::where('category_id', $category->id)->count() }}</span></label>
                                                                     </li>
                                                                     
@@ -165,7 +168,7 @@
                                                             @foreach($colors as $color)
                                                                 
                                                                 <div class="form-check form-option form-check-inline mb-1">
-                                                                    <input class="color_id" type="radio" name="color" id="whitea{{ $color->id }}" value="{{ $color->id }}">
+                                                                    <input {{ @$_GET['color'] == $color->id ? 'checked' : '' }} class="color_id" type="radio" name="color" id="whitea{{ $color->id }}" value="{{ $color->id }}">
                                                                     <label title="{{ $color->color_name }}" class="form-option-label rounded-circle" for="whitea{{ $color->id }}"><span class="form-option-color rounded-circle" style="background-color: {{ $color->color_code }};"></span></label>
                                                                 </div>
 
@@ -191,7 +194,7 @@
                                                             @foreach($sizes as $size)
                                                                 
                                                                 <div class="form-check form-option form-check-inline mb-2">
-                                                                    <input class="size_id" type="radio" name="sizes" id="{{ $size->id }}s" value="{{ $size->id }}">
+                                                                    <input {{ @$_GET['size'] == $size->id ? 'checked' : '' }} class="size_id" type="radio" name="sizes" id="{{ $size->id }}s" value="{{ $size->id }}">
                                                                     <label class="form-option-label" for="{{ $size->id }}s">{{ $size->product_size }}</label>
                                                                 </div>
 
@@ -220,10 +223,12 @@
 											<div class="col-xl-9 col-lg-8 col-md-7 col-sm-12">
 												<div class="filter_wraps d-flex align-items-center justify-content-end m-start">
 													<div class="single_fitres mr-2 br-right">
-														<select class="custom-select simple">
-														  <option value="1" selected="">Default Sorting</option>
-														  <option value="2">Sort by price: Low price</option>
-														  <option value="3">Sort by price: Hight price</option>
+														<select class="custom-select simple sort">
+														  <option value="">Default Sorting</option>
+														  <option value="1" {{ @$_GET['sort'] == 1 ? 'selected' : '' }}>Sort by price: Low -> High </option>
+														  <option value="2" {{ @$_GET['sort'] == 2 ? 'selected' : '' }}>Sort by price: Hight -> Low </option>
+														  <option value="3" {{ @$_GET['sort'] == 3 ? 'selected' : '' }}>Sort by A - Z</option>
+														  <option value="4" {{ @$_GET['sort'] == 4 ? 'selected' : '' }}>Sort by Z - A</option>
 														</select>
 													</div>
 													
@@ -276,9 +281,65 @@
 			var cat_id = $('input[class="category_id"]:checked').val();
 			var color_id = $('input[class="color_id"]:checked').val();
 			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
 			var min = $('.min-price').val();
 			var max = $('.max-price').val();
-            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max;
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
+            window.location.href = link;
+        });
+        $('.price_range').click(function () {
+            var input = $('#search_input').val();
+			var cat_id = $('input[class="category_id"]:checked').val();
+			var color_id = $('input[class="color_id"]:checked').val();
+			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
+			var min = $('.min-price').val();
+			var max = $('.max-price').val();
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
+            window.location.href = link;
+        });
+        $('.sort').change(function () {
+            var input = $('#search_input').val();
+			var cat_id = $('input[class="category_id"]:checked').val();
+			var color_id = $('input[class="color_id"]:checked').val();
+			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
+			var min = $('.min-price').val();
+			var max = $('.max-price').val();
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
+            window.location.href = link;
+        });
+        $('.size_id').click(function () {
+            var input = $('#search_input').val();
+			var cat_id = $('input[class="category_id"]:checked').val();
+			var color_id = $('input[class="color_id"]:checked').val();
+			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
+			var min = $('.min-price').val();
+			var max = $('.max-price').val();
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
+            window.location.href = link;
+        });
+        $('.color_id').click(function () {
+            var input = $('#search_input').val();
+			var cat_id = $('input[class="category_id"]:checked').val();
+			var color_id = $('input[class="color_id"]:checked').val();
+			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
+			var min = $('.min-price').val();
+			var max = $('.max-price').val();
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
+            window.location.href = link;
+        });
+        $('.category_id').click(function () {
+            var input = $('#search_input').val();
+			var cat_id = $('input[class="category_id"]:checked').val();
+			var color_id = $('input[class="color_id"]:checked').val();
+			var size_id = $('input[class="size_id"]:checked').val();
+			var sort = $('.sort').val();
+			var min = $('.min-price').val();
+			var max = $('.max-price').val();
+            var link = "{{ route('product.shop_search') }}"+"?keyword="+input+"&category="+cat_id+"&color="+color_id+"&size="+size_id+"&minprice="+min+"&maxprice="+max+"&sort="+sort;
             window.location.href = link;
         });
     </script>

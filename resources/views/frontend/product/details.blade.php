@@ -76,7 +76,7 @@
 											@foreach ($av_color as $itm)
 												<div class="form-check form-option form-check-inline mb-1">
 													<input class="form-check-input colorcl" type="radio" value="{{ $itm->color_id }}" name="color_id" id="white{{ $itm->rel_color->id }}">
-													<label class="form-option-label rounded-circle" for="white{{ $itm->rel_color->id }}">
+													<label title="{{ $itm->rel_color->color_name }}" class="form-option-label rounded-circle" for="white{{ $itm->rel_color->id }}">
 														<span class="form-option-color rounded-circle" style="background: {{ $itm->rel_color->color_code }};">
 															@if ($itm->rel_color->id == 1)
 																{{ $itm->rel_color->color_name }}

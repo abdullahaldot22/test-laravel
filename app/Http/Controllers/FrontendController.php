@@ -29,10 +29,12 @@ class FrontendController extends Controller
         $category = category::orderBy('category_name')->take(7)->get();
         $subcategory = subcategory::orderBy('subcategory_name')->take(12)->get();
         $product = product::take(8)->get();
+        $top_selling_product = orderProduct::groupBy('product_id')->selectRaw('sum(quantity) as sum, product_id')->orderBy('sum', 'DESC')->get()->take(3);
         return view('frontend.index', [
             'cat'=>$category,
             'scat'=>$subcategory,
             'product'=>$product,
+            'top_selling_product'=>$top_selling_product,
         ]);
     }
 
@@ -118,13 +120,46 @@ class FrontendController extends Controller
 
     function product_search(Request $request) {
         $data = $request->all();
+        $sorting = 'created_at';
+        $type = 'DESC';
+
+        if(!empty($data['sort']) && $data['sort'] != '' && $data['sort'] != 'undefined'){
+            if ($data['sort'] == 1) {
+                $sorting = 'after_discount';
+                $type = 'ASC';
+            }
+            elseif ($data['sort'] == 2) {
+                $sorting = 'after_discount';
+                $type = 'DESC';
+            }
+            elseif($data['sort'] == 3) {
+                $sorting = 'product_name';
+                $type = 'ASC';
+            }
+            elseif($data['sort'] == 4) {
+                $sorting = 'product_name';
+                $type = 'DESC';
+            }
+            else {
+                $sorting = 'Created_at';
+                $type = 'DESC';
+            }
+        }
+
         $products_search = product::where(function ($q) use ($data){
             $min_price = 0;
-            if(!empty($data['minprice']) && $data['minprice'] != '' && $data['minprice']){
+            $max_price = '';
+            if(!empty($data['minprice']) && $data['minprice'] != '' && $data['minprice'] != 'undefined'){
                 $min_price = $data['minprice'];
             }
             else{
                 $min_price = 1;
+            }
+            if(!empty($data['maxprice']) && $data['maxprice'] != '' && $data['maxprice'] != 'undefined'){
+                $max_price = $data['maxprice'];
+            }
+            else{
+                $max_price = product::max('after_discount');
             }
 
             if(!empty($data['keyword']) && $data['keyword'] != '' && $data['keyword'] != 'undefined'){
@@ -139,7 +174,7 @@ class FrontendController extends Controller
                 });
             }
             if(!empty($data['minprice']) && $data['minprice'] != '' && $data['minprice'] != 'undefined' || !empty($data['maxprice']) && $data['maxprice'] != '' && $data['maxprice'] != 'undefined'){
-                $q->whereBetween('after_discount', [$min_price, $data['maxprice']]);
+                $q->whereBetween('after_discount', [$min_price, $max_price]);
             }
             if(!empty($data['color']) && $data['color'] != '' && $data['color'] != 'undefined' || !empty($data['size']) && $data['size'] != '' && $data['size'] != 'undefined'){
                 $q->whereHas('rel_to_inventory',function ($q) use ($data){
@@ -155,7 +190,7 @@ class FrontendController extends Controller
                     }
                 });
             }
-        })->get();
+        })->orderBy($sorting, $type)->get();
         $categories = category::all();
         $colors = color::all();
         $sizes = size::all();
