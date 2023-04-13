@@ -23,10 +23,15 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-lebel">Image</label>
-                            <input type="file" name="image" class="form-control">
+                            <input type="file" name="image" class="form-control" onchange="document.getElementById('bla').src=window.URL.createObjectURL(this.files[0])">
                             @error('image')
                                 <strong class="tt text-danger">{{$message}}</strong>
                             @enderror
+                        </div>
+                        <div class="mb-4 mt-4">
+                            <div class="img m-auto" style="width: 180px; box-sizing: content-box; padding: 25px; border: 2px solid rgb(245, 245, 245); border-radius: 8px;">
+                                <img id="bla" style="display: flex; flex-flow: row no-wrap; width: 100%; align-items:center; justify-content: center;" src="{{ asset('uploads/user') }}/{{ Auth::user()->image }}" alt="">
+                            </div>
                         </div>
 
                         <div class="mb-3 pt-2">

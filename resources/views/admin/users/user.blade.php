@@ -10,6 +10,74 @@
 
 <div class="container container-fluid" style="padding-top: 0px; padding-bottom: 60px;">
     <div class="row">
+        <div class="col-lg-8 m-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Add User</h3>
+                    <div class="message">
+                        @if(session('add_err'))
+                            <div class="alert alert-danger">{{ session('add_err') }}</div>
+                        @else
+                            
+                        @endif
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.add.user') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <input class="form-control" type="text" name="name" placeholder="User Name">
+                            @error('name')
+                                <strong class="tt text-danger mt-2">{{ $message }}</strong>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <input class="form-control" type="email" name="mail" placeholder="Your Email">
+                            @error('mail')
+                                <strong class="tt text-danger mt-2">{{ $message }}</strong>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="password-input">
+                                <input id="pass" class="form-control" style="padding-right: 58px; letter-spacing: 2px;" type="password" name="pass" placeholder="Your Password">
+                                <div class="phide">
+                                    <img class="hide" src="{{ asset('backend/images/eye-protector.png') }}" alt="">
+                                </div>
+                            </div>
+                            @error('pass')
+                                <strong class="tt text-danger mt-2">{{ $message }}</strong>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <div class="password-input">
+                                <input id="cpass" class="form-control" style="padding-right: 58px; letter-spacing: 2px;" type="password" name="pass_confirmation" placeholder="Confirm Password">
+                                <div class="cphide">
+                                    <img class="hide" src="{{ asset('backend/images/eye-protector.png') }}" alt="">
+                                </div>
+                            </div>
+                            @error('pass_confirmation')
+                                <strong class="tt text-danger mt-2">{{ $message }}</strong>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <input class="form-control" type="file" name="image" placeholder="Your Profile Picture" onchange="document.getElementById('bla').src=window.URL.createObjectURL(this.files[0])">
+                            @error('image')
+                                <strong class="tt text-danger mt-2">{{ $message }}</strong>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <div class="img m-auto" style="width: 180px; height: 180px; box-sizing: content-box; padding: 25px; border: 2px solid rgb(245, 245, 245); border-radius: 8px;">
+                                <img id="bla" style="display: flex; flex-flow: row no-wrap; width: 100%; align-items:center; justify-content: center;" src="{{ asset('backend/images/user-dummy.png') }}" alt="">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Add User</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <h2 class="py-4">User page!</h2>
 
@@ -24,6 +92,7 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>E-mail</th>
+                            <th>Added By</th>
                             <th>Created at</th>
                             <th>Updated at</th>
                             <th>Action</th>
@@ -44,6 +113,7 @@
                             </td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->added_by == null ? 'Login' : App\Models\User::find($user->added_by)->name}}</td>
                             <td>{{$user->created_at->diffForHumans()}}</td>
                             <td>{{$user->updated_at->diffForHumans()}}</td>
                             <td><button class="btn btn-danger del" value="{{route('user.delete', $user->id)}}">Delete</button></td>
@@ -59,6 +129,27 @@
 @endsection
 
 @section('footer_script')
+
+    <script>
+        $('.cphide').click(function () {
+            var cpass = document.getElementById('cpass');
+            if(cpass.type == 'password'){
+                cpass.type = 'text';
+            }
+            else{
+                cpass.type = 'password';
+            }
+        })
+        $('.phide').click(function () {
+            var pass = document.getElementById('pass');
+            if(pass.type == 'password'){
+                pass.type = 'text';
+            }
+            else{
+                pass.type = 'password';
+            }
+        })
+    </script>
 
         <script>
             $('.del').click(function(){

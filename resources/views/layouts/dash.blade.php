@@ -90,6 +90,22 @@
             padding-left: 8px;
 			font-size: 14px !important;
 		}
+        .password-input{
+            position: relative;
+        }
+        .password-input img.hide{
+            width: 18px;
+        }
+        .password-input .cphide,
+        .password-input .phide{
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translate(0%, -50%);
+            box-sizing: border-box;
+            cursor: pointer;
+            padding: 6px 12px;
+        }
     </style>
 
 </head>

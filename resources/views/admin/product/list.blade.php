@@ -126,6 +126,7 @@
                                     </div>
                                     <div class="card-footer m-auto">
                                         <a href="{{ route('product.inventory', $pro->id) }}" class="btn btn-primary ed" title="Inventory"><i class="fa-solid fa-pencil"></i></a>
+                                        <a href="{{ route('product.edit.page', $pro->id) }}" class="btn btn-primary ed" title="Edit Product"><i class="fa-solid fa-file-pen"></i></a>
                                         <a href="{{ route('product.delete', $pro->id) }}" title="Delete" class="btn btn-primary ed"><i class="fa-regular fa-trash-can"></i></a>
                                     </div>
                                 </div>

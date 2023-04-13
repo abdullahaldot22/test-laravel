@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -79,5 +80,53 @@ class UserController extends Controller
                 'image'=>$file_name,
             ]);
             return back()->with('image', 'Image updated successfully.');
+    }
+
+    function users_add(Request $request) {
+        $request->validate([
+            'name' => 'required|min:5|regex:/^[A-za-z]+\s[A-za-z]+$/|max:40',
+            'mail' => 'required|email|unique:users,email',
+            'pass' => 'required|min:8|regex:/^[a-zA-Z\d_!\-@#\$%&*?]{8,}$/|confirmed',
+            'pass_confirmation' => 'required|min:8|required_with:pass|same:pass',
+            'image'=>'required|file|max:4096|mimes:jpg,png,jpeg',
+        ],[
+            'name.required' => 'Name cannot be empty',
+            'name.regex' => 'Name cannot contain any character without alphabet & should contain atleast 2 words',
+            'name.min' => 'Name must contain atleast 5 character',
+            'mail.required' => 'Mail is required',
+            'mail.email' => 'It should be a valid mail id',
+            'mail.unique' => 'This mail id is already used try with another mail id',
+            'pass.required' => 'Password cannot be empty',
+            'pass.min' => 'Password must contain 8 or more character long',
+            'pass.regex' => 'Password must contain alphanumeric character and some limited symbol',
+            'pass.confirmed' => 'Enter your password properly',
+            'pass_confirmation.required' => 'This field cannot be empty',
+            'pass_confirmation.min' => 'This field must contain atleast 8 or more character',
+            'pass_confirmation.same' => 'This field must contain as same character as Password contain',
+            'pass_confirmation.required_with' => 'This field must be filled with characters as same as password contain',
+            'image.required' => 'This field is required',
+            'image.max' => 'The image size limitation is upto 4 MB',
+            'image.mimes' => 'The image extention must contain jpg or png format',
+        ]);
+
+        $added_user = User::create([
+            'name' => $request->name,
+            'email' => $request->mail,
+            'password' => bcrypt($request->pass),
+            'added_by' => Auth::id(),
+            'remember_token' => $request->token,
+            'created_at' => Carbon::now(),
+        ]);
+
+        $id = $added_user->id;
+        $file = $request->image;
+        $ext = $file->getClientOriginalExtension();
+        $file_name = $id.'.'.$ext;
+        $img = Image::make($file)->resize(600,600)->save(public_path('uploads/user/'.$file_name));
+
+        user::find($id)->update([
+            'image' => $file_name,
+        ]);
+        return back()->with('log', 'User was added successfully !');
     }
 }

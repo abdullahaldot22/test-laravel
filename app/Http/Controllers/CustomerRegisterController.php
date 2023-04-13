@@ -29,6 +29,12 @@ class CustomerRegisterController extends Controller
     }
 
     function user_register(Request $request) {
+        $request->validate([
+            'name'=>'required|min:5',
+            'email'=>'required|email|unique:customer_login,email',
+            'password'=>'required|min:8',
+            'password_confirmation'=>'required|min:8',
+        ]);
         $new_customer = CustomerLogin::create([
             'name'=>$request->name,
             'email'=>$request->email,

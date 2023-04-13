@@ -103,6 +103,7 @@ Route::controller(StripePaymentController::class)->group(function(){
 // user [ ADMIN ] =====================
 
 Route::get('/users', [usercontroller::class, 'users'])->name('users')->middleware('auth');
+Route::post('/users/add', [usercontroller::class, 'users_add'])->name('admin.add.user');
 Route::get('/users/delete/{user_id}', [usercontroller::class, 'user_delete'])->name('user.delete')->middleware('auth');
 
 // profile ===========
@@ -137,6 +138,12 @@ Route::post('/product/coupon/add', [CouponController::class, 'coupon_add'])->nam
 Route::post('/getscat', [productcontroller::class, 'getscat']);
 Route::post('/product/store', [productcontroller::class, 'product_store'])->name('product.store')->middleware('auth');
 Route::get('/product/list', [productcontroller::class, 'product_list'])->name('product.list')->middleware('auth');
+Route::get('/product/edit/page/{pro_id}', [productcontroller::class, 'product_edit_page'])->name('product.edit.page')->middleware('auth');
+Route::post('/product/edit/apply', [productcontroller::class, 'product_edit_apply'])->name('product.edit.apply')->middleware('auth');
+Route::get('/product/edit/preview_&_thumbnails/{pro_id}', [productcontroller::class, 'product_edit_images_page'])->name('product.edit.images.page')->middleware('auth');
+Route::post('/product/edit/thumbnails/add', [productcontroller::class, 'product_add_thumbnail'])->name('product.add.thumbnail')->middleware('auth');
+Route::post('/product/edit/thumbnails/remove', [productcontroller::class, 'product_remove_thumbnail'])->name('product.remove.thumbnail')->middleware('auth');
+Route::post('/product/edit/preview/update', [productcontroller::class, 'product_update_preview'])->name('product.update.preview')->middleware('auth');
 Route::get('/product/s/inventory/{pro_id}', [productcontroller::class, 'product_inventory'])->name('product.inventory');
 Route::post('/product/s/inventory/add', [productcontroller::class, 'inventory_add'])->name('inventory.add');
 Route::get('/product/variation', [productcontroller::class, 'product_variation'])->name('product.variation')->middleware('auth');
