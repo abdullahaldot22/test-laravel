@@ -1,7 +1,14 @@
 @extends('layouts.dash')
 
 @section('content')
-
+<div class="page-titles">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Admin</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Products</a></li>
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">Order</a></li>
+    </ol>
+</div>
 
 <div class="card" style="margin-bottom: 250px">
     <div class="card-header">
@@ -16,16 +23,16 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Total</th>
-                    <th>Order Status</th>
+                    <th>Status</th>
                     <th>Payment Method</th>
-                    <th>Update Status</th>
-                    <th>Action</th>
+                    <th>Order Time</th>
+                    <th>Edit Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($running_orders as $order)
                     <tr>
-                        <td>{{ $order->order_id }}</td>
+                        <td><a href="{{ route('order.details', $order->id) }}">{{ $order->order_id }}</a></td>
                         <td>{{ $order->rel_to_customer->name }}</td>
                         <td>{{ $order->rel_to_customer->email }}</td>
                         <td>{{ $order->rel_to_customer->phone }}</td>
@@ -59,6 +66,9 @@
                             @endif
                         </td>
                         <td>
+                            {{ date('d,M Y', strtotime($order->created_at)) }}
+                        </td>
+                        <td style="text-align: center">
                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
                                 <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
                             </button>
@@ -75,7 +85,7 @@
                                 </form>
                             </div>
                         </td>
-                        <td>
+                        {{-- <td>
                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
                                 <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
                             </button>
@@ -83,7 +93,7 @@
                                 <a class="dropdown-item" href="">Edit</a>
                                 <a class="dropdown-item" href="">Delete</a>
                             </div>
-                        </td>
+                        </td> --}}
                     </tr>
                     
                 @endforeach

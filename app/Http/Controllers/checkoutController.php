@@ -132,7 +132,7 @@ class checkoutController extends Controller
 
             // send sms  ----------------------------------------------------------------------
 
-            return route('success');
+            return route('success.page');
         }
         elseif ($request->payment_method == 2) {
             $total = $request->sub_total + $request->charge_tg - $request->discount;

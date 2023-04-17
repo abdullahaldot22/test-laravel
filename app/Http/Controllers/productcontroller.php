@@ -42,6 +42,21 @@ class productcontroller extends Controller
         ]);
     }
 
+    function inventory_edit_page($inv_id) {
+        // echo $inv_id;
+        $info = inventory::find($inv_id);
+        $info_pro = product::find($info->product_id);
+        $color = color::all();
+        $size = size::where('subcategory_id', $info_pro->subcategory_id)->get();
+
+        return view('admin.product.inventory.inventory_edit', [
+            'info_pro' => $info_pro,
+            'info' => $info,
+            'color' => $color,
+            'size' => $size,
+        ]);
+    }
+
     function product_edit_apply(Request $request) {
         // return $request->all();
         $product_id = $request->pro_id;
@@ -233,7 +248,7 @@ class productcontroller extends Controller
         $size = size::all();
         $product_info = product::find($pro_id);
         $inventory = inventory::where('product_id', $pro_id)->get();
-        return view('admin.product.inventory', [
+        return view('admin.product.inventory.inventory', [
             'color'=>$color,
             'size'=>$size,
             'info'=>$product_info,
@@ -266,5 +281,27 @@ class productcontroller extends Controller
             'created_at'=>Carbon::now(),
         ]);
         return back();
+    }
+
+    function inventory_edit(Request $request) {
+        // print_r($request->all());
+        $info = inventory::find($request->id);
+        if (($request->color_id == $info->color_id) && ($request->size_id == $info->size_id) && ($request->quantity == $info->quantity)) {
+            return back()->with('inventory', 'Nothing has found to update');
+        }
+        else{
+            inventory::find($request->id)->update([
+                'color_id' => $request->color_id,
+                'size_id' => $request->size_id,
+                'quantity' => $request->quantity,
+            ]);
+            return back()->with('inventory', 'Inventory updated successfully');
+        }
+    }
+
+    function inventory_delete ($inv_id) {
+        // echo $inv_id;
+        inventory::find($inv_id)->delete();
+        return back()->with('inventory', 'Inventory deleted successfully');
     }
 }

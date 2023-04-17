@@ -8,9 +8,9 @@
     </ol>
 </div>
 
-<div class="container container-fluid" style="padding-top: 0px; padding-bottom: 60px;">
+{{-- <div class="container" style="padding-top: 0px; padding-bottom: 60px;"> --}}
     <div class="row">
-        <div class="col-lg-8 m-auto">
+        <div class="col-lg-3 order-2">
             <div class="card">
                 <div class="card-header">
                     <h3>Add User</h3>
@@ -76,10 +76,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="py-4">User page!</h2>
+    {{-- </div>
+    <div class="row"> --}}
+        <div class="col-lg-9 order-1">
 
             <div class="box px-4 pb-1" style="background: #ffffff; border-radius: 12px;">
                 <div class="box-header py-4" style="color: #383838b6;">
@@ -101,7 +100,7 @@
                         
 
                         @foreach ($users as $sl => $user)
-                        <tr>
+                        <tr style="background-color: {{ $user->id == Auth::id() ? 'turquoise' : '' }}">
                             <td>{{$sl + 1}}</td>
                             <td>
                                 @if ($user->image == null)
@@ -114,9 +113,19 @@
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->added_by == null ? 'Login' : App\Models\User::find($user->added_by)->name}}</td>
-                            <td>{{$user->created_at->diffForHumans()}}</td>
-                            <td>{{$user->updated_at->diffForHumans()}}</td>
-                            <td><button class="btn btn-danger del" value="{{route('user.delete', $user->id)}}">Delete</button></td>
+                            <td>{{date('d, M Y',strtotime($user->created_at))}}</td>
+                            <td>{{date('d, M Y',strtotime($user->updated_at))}}</td>
+                            <td>
+                                <div class="dropdown show {{ $user->id == Auth::id() ? 'd-none' : '' }}">
+                                    <button type="button" class="btn btn-success light sharp" data-toggle="dropdown" aria-expanded="true">
+                                        <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-26px, 40px, 0px);">
+                                        <a class="dropdown-item" href="{{ route('admin.edit.users.page', $user->id) }}">Edit</a>
+                                        <a class="dropdown-item" href="{{route('admin.user.delete', $user->id)}}">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                     </table>
@@ -124,7 +133,7 @@
             </div>
         </div>
     </div>
-</div>
+{{-- </div> --}}
 
 @endsection
 

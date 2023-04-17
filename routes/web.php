@@ -42,7 +42,7 @@ Route::get('/user/checkout/', [customerController::class, 'checkout_page'])->nam
 Route::get('/user/profile/', [customerController::class, 'customer_profile_page'])->name('customer.profile')->middleware('customerlogin');
 Route::get('/user/my_order/', [customerController::class, 'customer_order_page'])->name('customer.myorder')->middleware('customerlogin');
 Route::get('/user/my_wishlist/', [customerController::class, 'customer_wish_page'])->name('customer.wishlist')->middleware('customerlogin');
-Route::get('/success', [customerController::class, 'customer_order_success'])->name('success')->middleware('customerlogin');
+Route::get('/success', [customerController::class, 'customer_order_success'])->name('success.page')->middleware('customerlogin');
 Route::get('/error', [customerController::class, 'error_page'])->name('error');
 Route::get('/customer/reset/password', [customerController::class, 'pass_reset_page'])->name('password.reset.page');
 Route::get('/customer/reset/password/form/{token}', [customerController::class, 'pass_reset_form_page'])->name('password.reset.form.page');
@@ -104,7 +104,11 @@ Route::controller(StripePaymentController::class)->group(function(){
 
 Route::get('/users', [usercontroller::class, 'users'])->name('users')->middleware('auth');
 Route::post('/users/add', [usercontroller::class, 'users_add'])->name('admin.add.user');
-Route::get('/users/delete/{user_id}', [usercontroller::class, 'user_delete'])->name('user.delete')->middleware('auth');
+Route::get('/users/edit_page/{usr_id}', [usercontroller::class, 'users_edit_page'])->name('admin.edit.users.page');
+Route::post('admin/users/edit/info', [usercontroller::class, 'admin_users_edit_info'])->name('admin.user.edit.info');
+Route::post('admin/users/edit/password', [usercontroller::class, 'admin_users_edit_password'])->name('admin.user.edit.password');
+Route::post('admin/users/edit/image', [usercontroller::class, 'admin_users_edit_image'])->name('admin.user.edit.image');
+Route::get('/users/delete/{user_id}', [usercontroller::class, 'user_delete'])->name('admin.user.delete')->middleware('auth');
 
 // profile ===========
 Route::get('/profile', [usercontroller::class, 'profile'])->name('profile')->middleware('auth');
@@ -135,6 +139,9 @@ Route::post('/subcategory/update/', [subcategorycontroller::class, 'scat_update'
 Route::get('/product', [productcontroller::class, 'product'])->name('product')->middleware('auth');
 Route::get('/product/coupon', [CouponController::class, 'product_coupon'])->name('event.coupon')->middleware('auth');
 Route::post('/product/coupon/add', [CouponController::class, 'coupon_add'])->name('coupon.add')->middleware('auth');
+Route::get('/product/coupon/edit/{coupon_id}', [CouponController::class, 'coupon_edit_page'])->name('coupon.edit.page')->middleware('auth');
+Route::post('/product/coupon/edit/', [CouponController::class, 'coupon_edit'])->name('coupon.edit')->middleware('auth');
+Route::get('/product/coupon/delete/{cpn_id}', [CouponController::class, 'coupon_delete'])->name('coupon.delete')->middleware('auth');
 Route::post('/getscat', [productcontroller::class, 'getscat']);
 Route::post('/product/store', [productcontroller::class, 'product_store'])->name('product.store')->middleware('auth');
 Route::get('/product/list', [productcontroller::class, 'product_list'])->name('product.list')->middleware('auth');
@@ -146,6 +153,9 @@ Route::post('/product/edit/thumbnails/remove', [productcontroller::class, 'produ
 Route::post('/product/edit/preview/update', [productcontroller::class, 'product_update_preview'])->name('product.update.preview')->middleware('auth');
 Route::get('/product/s/inventory/{pro_id}', [productcontroller::class, 'product_inventory'])->name('product.inventory');
 Route::post('/product/s/inventory/add', [productcontroller::class, 'inventory_add'])->name('inventory.add');
+Route::get('/product/inventory/edit/{inv_id}', [productcontroller::class, 'inventory_edit_page'])->name('inventory.edit.page');
+Route::post('/product/inventory/edit/apply', [productcontroller::class, 'inventory_edit'])->name('inventory.edit');
+Route::get('/product/inventory/delete/{inv_id}', [productcontroller::class, 'inventory_delete'])->name('inventory.delete');
 Route::get('/product/variation', [productcontroller::class, 'product_variation'])->name('product.variation')->middleware('auth');
 Route::post('/product/variation/color/store', [productcontroller::class, 'color_store'])->name('color.store');
 Route::post('/product/variation/size/store', [productcontroller::class, 'size_store'])->name('size.store');
@@ -154,6 +164,7 @@ Route::get('/product/delete/{pro_id}', [productcontroller::class, 'product_delet
 // order --------------------------------------------------------
 Route::get('/customer/order_control', [orderAdminController::class, 'order_controller_page'])->name('customer.order');
 Route::post('/customer/order/status/update/', [orderAdminController::class, 'order_status_update'])->name('order.status.update');
+Route::get('/customer/order/details/{ordr_id}', [orderAdminController::class, 'order_details'])->name('order.details');
 
 
 // SSLCOMMERZ Start

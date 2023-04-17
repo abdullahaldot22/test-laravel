@@ -65,7 +65,7 @@
                                 <td style="padding-left: 22px;">{{$key+1}}</td>
                                 <td><img width="40" src="{{asset('uploads/category')}}/{{$cat->category_image}}" alt=""></td>
                                 <td>{{$cat->category_name}}</td>
-                                <td>{{$cat->rel_usr->name}}</td>
+                                <td>{{ $cat->rel_usr == null ? 'Deleted' : $cat->rel_usr->name }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
@@ -111,7 +111,7 @@
                                     <td style="padding-left: 22px;">{{$key+1}}</td>
                                     <td><img width="40" src="{{asset('uploads/category')}}/{{$cat->category_image}}" alt=""></td>
                                     <td>{{$cat->category_name}}</td>
-                                    <td>{{$cat->rel_usr->name}}</td>
+                                    <td>{{$cat->rel_usr == null ? 'Deleted' : $cat->rel_usr->name}}</td>
                                     <td>
                                         <div class="dropdown">
                                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">

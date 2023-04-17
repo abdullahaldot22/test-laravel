@@ -98,7 +98,8 @@
                                             <div class="cart_single_caption pl-3">
                                                 <p class="mb-0"><span class="text-muted small">{{ $oproduct->rel_to_product->rel_scat->subcategory_name }}</span></p>
                                                 <h4 class="product_title fs-sm ft-medium mb-1 lh-1">{{ $oproduct->rel_to_product->product_name }}</h4>
-                                                <p class="mb-2"><span class="text-dark medium">Size: {{ $oproduct->rel_to_size->product_size }}</span>, <span class="text-dark medium">Color: {{ $oproduct->rel_to_color->color_name }}</span></p>
+                                                <p style="margin: 0px"><span class="text-dark medium">Size: {{ $oproduct->rel_to_size->product_size }}</span>, <span class="text-dark medium">Color: {{ $oproduct->rel_to_color->color_name }}</span></p>
+                                                <p class="mb-2"><span class="text-dark medium">Quantity: {{ $oproduct->quantity }} piece.</span></p>
                                                 <h4 class="fs-sm ft-bold mb-0 lh-1">&#2547; {{ $oproduct->rel_to_product->price }}</h4>
                                             </div>
                                         </div>

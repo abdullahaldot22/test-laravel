@@ -6,12 +6,13 @@ use App\Models\CouponStore;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Coupon;
 
 class CouponController extends Controller
 {
     function product_coupon(){
         $coupons = CouponStore::all();
-        return view('admin.product.coupon', [
+        return view('admin.coupon.coupon', [
             'coupons' => $coupons,
         ]);
     }
@@ -25,7 +26,7 @@ class CouponController extends Controller
                 'discount_method'=>'required|digits_between:1,2|max:2',
                 'discount_amount'=>'required|digits_between:1,99999|max:5',
                 'discount_range'=>'nullable|digits_between:1,99999|max:5',
-                'lowest_amount_range'=>'nullable|digits_between:1,999999',
+                'lowest_amount_range'=>'required|digits_between:1,999999',
                 'validity_date'=>'required|date',
             ],[
                 'event_name.required'=>'This name is required!',
@@ -50,6 +51,40 @@ class CouponController extends Controller
         }
         // print_r($request->all());
         // echo Auth::id();
+        return back();
+    }
+
+    function coupon_edit_page($coupon_id) {
+        $info = CouponStore::find($coupon_id);
+        return view('admin.coupon.coupon_edit', [
+            'info' => $info,
+            'cpn_id' => $coupon_id,
+        ]);
+    }
+
+    function coupon_edit(Request $request) {
+        $range = '';
+        if ($request->discount_method == 2) {
+            $range = null;
+        }else {
+            $range = $request->discount_range;
+        }
+        // print_r($request->all());
+        CouponStore::find($request->cpn_id)->update([
+            'event_name'=>$request->event_name,
+            'coupon_code'=>$request->coupon_code,
+            'discount_method'=>$request->discount_method,
+            'discount_amount'=>$request->discount_amount,
+            'discount_range'=>$range,
+            'lowest_total_amount'=>$request->lowest_amount_range,
+            'validity_date'=>$request->validity_date,
+        ]);
+        return back()->with('cpn_edit', 'Coupon edited successfully');
+    }
+
+    function coupon_delete($cpn_id) {
+        echo $cpn_id;
+        CouponStore::find($cpn_id)->delete();
         return back();
     }
 }
