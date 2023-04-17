@@ -10,7 +10,7 @@
     </ol>
 </div>
 
-<div class="card" style="margin-bottom: 250px">
+<div class="card mb-5">
     <div class="card-header">
         <h3>Order Status</h3>
     </div>
@@ -30,13 +30,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($running_orders as $order)
+                @foreach($running_orders->sortBy('order_id') as $order)
                     <tr>
                         <td><a href="{{ route('order.details', $order->id) }}">{{ $order->order_id }}</a></td>
                         <td>{{ $order->rel_to_customer->name }}</td>
                         <td>{{ $order->rel_to_customer->email }}</td>
                         <td>{{ $order->rel_to_customer->phone }}</td>
-                        <td>{{ number_format($order->total) }}</td>
+                        <td>&#2547; {{ number_format($order->total) }}</td>
                         <td>
                             @if($order->status == 1)
                                 {{ 'Placed' }}
@@ -66,7 +66,7 @@
                             @endif
                         </td>
                         <td>
-                            {{ date('d,M Y', strtotime($order->created_at)) }}
+                            {{ date('d, M Y', strtotime($order->created_at)) }}
                         </td>
                         <td style="text-align: center">
                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
@@ -94,6 +94,56 @@
                                 <a class="dropdown-item" href="">Delete</a>
                             </div>
                         </td> --}}
+                    </tr>
+                    
+                @endforeach
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h3>Delivered Order</h3>
+    </div>
+    <div class="card-body">
+        <table class="table primary-table-bordered">
+            <thead>
+                <tr class="thead-primary">
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Total</th>
+                    <th>Payment Method</th>
+                    <th>Order Time</th>
+                    <th>Delivery Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($finished_orders->sortBy('order_id') as $order)
+                    <tr>
+                        <td><a href="{{ route('order.details', $order->id) }}">{{ $order->order_id }}</a></td>
+                        <td>{{ $order->rel_to_customer->name }}</td>
+                        <td>{{ $order->rel_to_customer->email }}</td>
+                        <td>{{ $order->rel_to_customer->phone }}</td>
+                        <td>&#2547; {{ number_format($order->total) }}</td>
+                        <td>
+                            @if($order->payment_method == 1)
+                                {{ 'Cash On Delivery' }}
+                            @elseif($order->payment_method == 2)
+                                {{ 'Paid With SSLCommerz' }}
+                            @elseif($order->payment_method == 3)
+                                {{ 'Paid With Stripe' }}
+                            @else
+                                {{ 'Something went wrong' }}
+                            @endif
+                        </td>
+                        <td>
+                            {{ date('d, M Y', strtotime($order->created_at)) }}
+                        </td>
+                        <td>{{ date('d, M Y', strtotime($order->delivery)) }}</td>
                     </tr>
                     
                 @endforeach

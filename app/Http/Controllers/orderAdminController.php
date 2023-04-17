@@ -11,9 +11,11 @@ class orderAdminController extends Controller
     function order_controller_page(){
         $orders = Order::all();
         $running_orders = Order::where('delivery', null)->get();
+        $finished_orders = Order::whereNotNull('delivery')->get();
         return view('admin.order.order_control', [
             'orders' => $orders,
             'running_orders' => $running_orders,
+            'finished_orders' => $finished_orders,
         ]);
     }
 
