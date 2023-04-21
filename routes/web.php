@@ -110,12 +110,16 @@ Route::post('admin/users/edit/password', [usercontroller::class, 'admin_users_ed
 Route::post('admin/users/edit/image', [usercontroller::class, 'admin_users_edit_image'])->name('admin.user.edit.image');
 Route::get('/users/delete/{user_id}', [usercontroller::class, 'user_delete'])->name('admin.user.delete')->middleware('auth');
 
+
+Route::get('/admin/control/customers', [usercontroller::class, 'customer_control'])->name('customer.control')->middleware('auth');
+
 // profile ===========
 Route::get('/profile', [usercontroller::class, 'profile'])->name('profile')->middleware('auth');
 Route::get('/profile/update/edit', [usercontroller::class, 'profile_update_edit'])->name('profile.update.edit')->middleware('auth');
 Route::post('/profile_image/update', [usercontroller::class, 'image_update'])->name('image.update');
 Route::post('/profile/update', [usercontroller::class, 'profile_update'])->name('profile.update');
 Route::post('/password/update', [usercontroller::class, 'password_update'])->name('password.update');
+Route::get('/admin/control/customer/details/{cus_id}', [usercontroller::class, 'admin_customer_control_details'])->name('admin.customer.control.details');
 
 // category
 Route::get('/category', [CategoryController::class, 'category'])->name('category')->middleware('auth');
@@ -165,6 +169,7 @@ Route::get('/product/delete/{pro_id}', [productcontroller::class, 'product_delet
 Route::get('/customer/order_control', [orderAdminController::class, 'order_controller_page'])->name('customer.order');
 Route::post('/customer/order/status/update/', [orderAdminController::class, 'order_status_update'])->name('order.status.update');
 Route::get('/customer/order/details/{ordr_id}', [orderAdminController::class, 'order_details'])->name('order.details');
+Route::get('/customer/order/review', [orderAdminController::class, 'control_review'])->name('review.control');
 
 
 // SSLCOMMERZ Start

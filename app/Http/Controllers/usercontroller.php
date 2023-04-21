@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerLogin;
+use App\Models\Order;
+use App\Models\orderProduct;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,8 +32,29 @@ class UserController extends Controller
         return view('admin.users.profile');
     }
 
+    function customer_control() {
+        $customer = CustomerLogin::all();
+        return view('admin.users.customer_control', [
+            'customer' => $customer,
+        ]);
+    }
+
     function profile_update_edit(){
         return view('admin.users.profile_edit');
+    }
+
+    function admin_customer_control_details($cus_id) {
+        $info = CustomerLogin::find($cus_id);
+        $opro = orderProduct::where('customer_id', $cus_id)->get();
+        $order = Order::where('customer_id', $cus_id)->orderBy('created_at', 'desc')->get();
+        // print_r();
+        // echo date('d, M Y', strtotime($order->take(1)->first()->created_at));
+        return view('admin.users.customer_control_details', [
+            'cus_id' => $cus_id,
+            'info' => $info,
+            'opro' => $opro,
+            'order' => $order,
+        ]);
     }
 
     function users_edit_page($usr_id) {

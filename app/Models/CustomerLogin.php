@@ -18,4 +18,8 @@ class CustomerLogin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    function rel_to_opro() {
+        return $this->hasMany(orderProduct::class, 'customer_id');
+    }
 }

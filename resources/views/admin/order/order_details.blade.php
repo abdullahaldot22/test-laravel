@@ -21,6 +21,7 @@
                     <div class="pl-3" style="font-size: 13px">
                         <div title="" class="">{{ $order->rel_to_customer->name }}</div>
                         <div class="">{{ $order->rel_to_customer->email }}</div>
+                        <div title="" class="mt-1">{{ $order->phone }}</div>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\orderProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class orderAdminController extends Controller
@@ -21,9 +22,16 @@ class orderAdminController extends Controller
 
     function order_status_update(Request $request) {
         print_r($request->all());
-        Order::find($request->order_id)->update([
-            'status' => $request->status,
-        ]);
+        if ($request->status == 5) {
+            Order::find($request->order_id)->update([
+                'status' => $request->status,
+                'delivery' => Carbon::now(),
+            ]);
+        }else{
+            Order::find($request->order_id)->update([
+                'status' => $request->status,
+            ]);
+        }
         return back();
     }
 
@@ -35,6 +43,13 @@ class orderAdminController extends Controller
         return view('admin.order.order_details', [
             'order' => $order,
             'order_pro' => $order_pro,
+        ]);
+    }
+
+    function control_review() {
+        $review = orderProduct::whereNotNull('review')->get();
+        return view('admin.order.control_review', [
+            'review' => $review,
         ]);
     }
 }

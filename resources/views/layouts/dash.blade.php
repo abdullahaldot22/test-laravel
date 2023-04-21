@@ -306,7 +306,7 @@
 							<li><a href="{{Route('about')}}">About US</a></li>
 							<li><a href="{{Route('users')}}">Users</a></li>
 							<li><a href="{{Route('profile')}}">Profile</a></li>
-							<li><a href="{{Route('profile')}}">Customers</a></li>
+							<li><a href="{{Route('customer.control')}}">Customers</a></li>
 						</ul>
 					</li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
@@ -326,7 +326,7 @@
                             </li>
 							<li><a href="{{route('event.coupon')}}">Coupon</a></li>
 							<li><a href="{{route('customer.order')}}">Order</a></li>
-							<li><a href="{{route('customer.order')}}">Review</a></li>
+							<li><a href="{{route('review.control')}}">Review</a></li>
 						</ul>
                     </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
