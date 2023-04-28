@@ -84,11 +84,14 @@
                                 </div>
                             </div>
                         </div>
+                        @can('customer_details_action')
+                            
                         <div class="onbox text-center w-100 mt-4">
                             <button class="btn btn-primary">Block</button>
                             <button class="btn btn-primary">Wanrning</button>
                             <button class="btn btn-primary">Delete</button>
                         </div>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -149,7 +152,7 @@
                                     <td>{{ $pstatus }}</td>
                                     <td>&#2547; {{ number_format($order->total) }}</td>
                                     <td>{{ $status }}</td>
-                                    <td>{{ $order->delivery == null ? '-' : date('d, M Y', strtotime($order->delivary)) }}</td>
+                                    <td>{{ $order->delivery == null ? '-' : date('d, M Y', strtotime($order->delivery)) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

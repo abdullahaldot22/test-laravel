@@ -20,6 +20,7 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\SslCommerzPaymentController;
+use App\Http\Controllers\superAdminRoleManagementController;
 
 Auth::routes();
 
@@ -109,12 +110,22 @@ Route::post('admin/users/edit/info', [usercontroller::class, 'admin_users_edit_i
 Route::post('admin/users/edit/password', [usercontroller::class, 'admin_users_edit_password'])->name('admin.user.edit.password');
 Route::post('admin/users/edit/image', [usercontroller::class, 'admin_users_edit_image'])->name('admin.user.edit.image');
 Route::get('/users/delete/{user_id}', [usercontroller::class, 'user_delete'])->name('admin.user.delete')->middleware('auth');
-
-
+Route::get('superAdmin/manage/admin_role', [usercontroller::class, 'superadmin_role_management_page'])->name('superadmin.role.management')->middleware('auth');
 Route::get('/admin/control/customers', [usercontroller::class, 'customer_control'])->name('customer.control')->middleware('auth');
 
+// superAdmin_Role_management ================================================
+Route::post('superadmin/manage/admin/permission/add', [superAdminRoleManagementController::class, 'admin_permission_add'])->name('admin.permission.add');
+Route::post('superadmin/manage/admin/role/add', [superAdminRoleManagementController::class, 'admin_role_add'])->name('admin.role.add');
+Route::get('superadmin/manage/role/action/{role_id}', [superAdminRoleManagementController::class, 'superadmin_role_action'])->name('superadmin.role.action');
+Route::post('superadmin/manage/role/permission/update', [superAdminRoleManagementController::class, 'superadmin_role_permission_update'])->name('admin.role.permission.update');
+Route::post('superadmin/manage/role/assign_to_admin', [superAdminRoleManagementController::class, 'superadmin_role_assign'])->name('superadmin.role.assign');
+Route::get('superadmin/manage/admin/role/edit/page/{admin_id}', [superAdminRoleManagementController::class, 'superadmin_admin_role_edit_page'])->name('superadmin.admin.role.edit');
+Route::post('superadmin/manage/admin/role/edit', [superAdminRoleManagementController::class, 'superadmin_admin_role_action_edit'])->name('admin.role.action.edit');
+
+
+
 // profile ===========
-Route::get('/profile', [usercontroller::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/admin/profile', [usercontroller::class, 'admin_profile'])->name('admin.profile')->middleware('auth');
 Route::get('/profile/update/edit', [usercontroller::class, 'profile_update_edit'])->name('profile.update.edit')->middleware('auth');
 Route::post('/profile_image/update', [usercontroller::class, 'image_update'])->name('image.update');
 Route::post('/profile/update', [usercontroller::class, 'profile_update'])->name('profile.update');
@@ -170,6 +181,8 @@ Route::get('/customer/order_control', [orderAdminController::class, 'order_contr
 Route::post('/customer/order/status/update/', [orderAdminController::class, 'order_status_update'])->name('order.status.update');
 Route::get('/customer/order/details/{ordr_id}', [orderAdminController::class, 'order_details'])->name('order.details');
 Route::get('/customer/order/review', [orderAdminController::class, 'control_review'])->name('review.control');
+Route::get('/customer/order/admin/review/remove/{cus_id}', [orderAdminController::class, 'admin_remove_review'])->name('admin.remove.review');
+Route::get('/order/notification/status/update/{not_id}', [orderAdminController::class, 'order_notification_status_update'])->name('order.notification.status.update');
 
 
 // SSLCOMMERZ Start

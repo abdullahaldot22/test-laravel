@@ -26,13 +26,24 @@
                     <th>Status</th>
                     <th>Payment Method</th>
                     <th>Order Time</th>
+                    @can('order_status_edit')
+                        
                     <th>Edit Status</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
                 @foreach($running_orders->sortBy('order_id') as $order)
                     <tr>
-                        <td><a href="{{ route('order.details', $order->id) }}">{{ $order->order_id }}</a></td>
+                        <td>
+                            @can('order_details')
+                            <a href="{{ route('order.details', $order->id) }}">
+                                @endcan
+                                {{ $order->order_id }}
+                                @can('order_details')
+                            </a>
+                            @endcan
+                        </td>
                         <td>{{ $order->rel_to_customer->name }}</td>
                         <td>{{ $order->rel_to_customer->email }}</td>
                         <td>{{ $order->rel_to_customer->phone }}</td>
@@ -68,6 +79,8 @@
                         <td>
                             {{ date('d, M Y', strtotime($order->created_at)) }}
                         </td>
+                        @can('order_status_edit')
+                            
                         <td style="text-align: center">
                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
                                 <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
@@ -85,6 +98,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endcan
                         {{-- <td>
                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown">
                                 <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
@@ -124,7 +138,16 @@
             <tbody>
                 @foreach($finished_orders->sortBy('order_id') as $order)
                     <tr>
-                        <td><a href="{{ route('order.details', $order->id) }}">{{ $order->order_id }}</a></td>
+                        <td>
+                            @can('order_details')
+                                
+                            <a href="{{ route('order.details', $order->id) }}">
+                                @endcan
+                                {{ $order->order_id }}
+                                @can('order_details')
+                            </a>
+                            @endcan
+                        </td>
                         <td>{{ $order->rel_to_customer->name }}</td>
                         <td>{{ $order->rel_to_customer->email }}</td>
                         <td>{{ $order->rel_to_customer->phone }}</td>

@@ -48,8 +48,22 @@ class orderAdminController extends Controller
 
     function control_review() {
         $review = orderProduct::whereNotNull('review')->get();
-        return view('admin.order.control_review', [
+        return view('admin.order.review.control_review', [
             'review' => $review,
         ]);
+    }
+
+    function admin_remove_review($cus_id) {
+        // echo $cus_id;
+        orderProduct::find($cus_id)->delete('review');
+        return back();
+    }
+
+    function order_notification_status_update($not_id) {
+        echo $not_id;
+        Order::find($not_id)->update([
+            'notification_status' => 1,
+        ]);
+        return redirect()->route('order.details', $not_id);
     }
 }

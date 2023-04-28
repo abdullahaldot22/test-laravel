@@ -33,6 +33,8 @@
 
 <div class="row">
     <div class="col-lg-2"></div>
+    @can('add_delete_product_variation_color')
+        
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
@@ -54,37 +56,41 @@
             </div>
         </div>
     </div>
+    @endcan
 
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <h5>Add Size</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('size.store') }}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <select name="scat_id" class="form-control">
-                            <option value="">Select Subcategory</option>
-                            @foreach ($scat as $scat)
-                                <option value="{{ $scat->id }}">{{ $scat->subcategory_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <input type="text" name="sname" class="form-control" placeholder="Size" id="">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <button style="width: 100%;" type="submit" class="btn btn-primary">Add Size</button>
-                    </div>
-                </form>
-            </div>
+@can('add_delete_product_variation_size')
+    
+<div class="col-lg-4">
+    <div class="card">
+        <div class="card-header">
+            <h5>Add Size</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('size.store') }}" method="post">
+                @csrf
+                <div class="mb-3">
+                    <select name="scat_id" class="form-control">
+                        <option value="">Select Subcategory</option>
+                        @foreach ($scat as $scat)
+                        <option value="{{ $scat->id }}">{{ $scat->subcategory_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <input type="text" name="sname" class="form-control" placeholder="Size" id="">
+                </div>
+                
+                <div class="mb-3">
+                    <button style="width: 100%;" type="submit" class="btn btn-primary">Add Size</button>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="col-lg-2"></div>
 </div>
+<div class="col-lg-2"></div>
+</div>
+@endcan
 
 <div class="row">
     <div class="col-lg-1"></div>
@@ -99,7 +105,10 @@
                         <tr>
                             <th>Name</th>
                             <th>Code</th>
+                            @can('add_delete_product_variation_color')
+                                
                             <th>Action</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -107,7 +116,10 @@
                             <tr>
                                 <td>{{ $itm->color_name }}</td>
                                 <td><span class="scolor" style="background: {{ $itm->color_code }};">{{ $itm->color_code }}</span></td>
+                                @can('add_delete_product_variation_color')
+                                    
                                 <td><a href="" title="Delete" class="btn btn-danger ed"><i class="fa-regular fa-trash-can"></i></a></td>
+                                @endcan
                             </tr>
                         @endforeach
                         </tbody>
@@ -127,7 +139,10 @@
                         <tr>
                             <th>Name</th>
                             <th>Subcategory</th>
+                            @can('add_delete_product_variation_size')
+                                
                             <th>Action</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -135,7 +150,10 @@
                             <tr>
                                 <td>{{ $itm->product_size }}</td>
                                 <td>{{$itm->rel_to_scat->subcategory_name}}</td>
+                                @can('add_delete_product_variation_size')
+                                    
                                 <td><a href="" title="Delete" class="btn btn-danger ed"><i class="fa-regular fa-trash-can"></i></a></td>
+                                @endcan
                             </tr>
                         @endforeach
                     </tbody>

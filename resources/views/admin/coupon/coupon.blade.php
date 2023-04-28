@@ -29,7 +29,10 @@
                                 <th title="Discount Range">Apply Range Starts From</th>
                                 <th>Validity</th>
                                 <th>Added_by</th>
+                                @can('coupon_action')
+                                    
                                 <th>Action</th>
+                                @endcan
                             </tr>
                         </thead>
                         <tbody>
@@ -70,6 +73,8 @@
                                         @endphp --}}
                                     <td>{{ date('d, M Y',strtotime($coupon->validity_date)) }}</td>
                                     <td>{{ $coupon->rel_user->name }}</td>
+                                    @can('coupon_action')
+                                        
                                     <td>
                                         <div class="dropdown show">
                                             <button type="button" class="btn btn-success light sharp" data-toggle="dropdown" aria-expanded="true">
@@ -80,8 +85,9 @@
                                                 <a class="dropdown-item" href="{{ route('coupon.delete', $coupon->id) }}">Delete</a>
                                             </div>
                                         </div>
-                                
+                                        
                                     </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>
@@ -92,6 +98,8 @@
 
     </div>
     
+    @can('add_coupon')
+        
     <div class="row">
         
         <div class="col-lg-3 m-auto">
@@ -105,13 +113,13 @@
                         <div class="mb-3">
                             <input type="text" class="form-control" placeholder="Event Name" name="event_name" id="name">
                             @error('event_name')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" placeholder="Coupon Code" name="coupon_code" id="code">
                             @error('coupon_code')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-3">
@@ -121,32 +129,32 @@
                                 <option value="2">Solid Cash</option>
                             </select>
                             @error('discount_method')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <input type="text" name="discount_amount" class="form-control" placeholder="Amount of Discount" id="">
                             @error('discount_amount')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" placeholder="Range of Discount" name="discount_range" id="range">
                             @error('discount_range')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" placeholder="Range of Lowest Total Amount to Apply on" name="lowest_amount_range" id="range">
                             @error('lowest_amount_range')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="mb-4">
                             <label for="last_date">Validity</label>
                             <input type="date" class="form-control" name="validity_date" id="last_date">
                             @error('validity_date')
-                                <strong class="tt">{{ $message }}</strong>
+                            <strong class="tt">{{ $message }}</strong>
                             @enderror
                         </div>
                         <div class="w-100 d-flex" style="justify-content:center;">
@@ -157,6 +165,7 @@
             </div>
         </div>
     </div>
+    @endcan
 </div>
 
 @endsection

@@ -186,10 +186,12 @@
                     </div>
 
                 </form>
-
+                @can('edit_product_images')
+                    
                 <div class="mb-5 mt-5">
                     <a class="btn btn-primary w-100" href="{{ route('product.edit.images.page', $pro_id) }}">Change product preview & thumbnails</a>
                 </div>
+                @endcan
             </div>
         </div>
     </div>

@@ -125,8 +125,14 @@
                                         <h5 class="card-text" style="font-size: 12px; color:#cccccc;">{{ $pro->short_description }}</h5>
                                     </div>
                                     <div class="card-footer m-auto">
+                                        @can('product_inventory')
+                                            
                                         <a href="{{ route('product.inventory', $pro->id) }}" class="btn btn-primary ed" title="Inventory"><i class="fa-solid fa-pencil"></i></a>
+                                        @endcan
+                                        @can('edit_product_details')
+                                            
                                         <a href="{{ route('product.edit.page', $pro->id) }}" class="btn btn-primary ed" title="Edit Product"><i class="fa-solid fa-file-pen"></i></a>
+                                        @endcan
                                         <a href="{{ route('product.delete', $pro->id) }}" title="Delete" class="btn btn-primary ed"><i class="fa-regular fa-trash-can"></i></a>
                                     </div>
                                 </div>

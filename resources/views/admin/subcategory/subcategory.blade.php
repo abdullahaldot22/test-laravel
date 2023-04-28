@@ -11,6 +11,8 @@
 </div>
 
 <div class="row">
+    @can('add_subcategory')
+        
     <div class="col-lg-12">
         <div class="col-lg-6 m-auto">
             <div class="card">
@@ -25,7 +27,7 @@
                             <select name="cat_id" class="form-control">
                                 <option value="">Select Category</option>
                                 @foreach ($cat as $cat)
-                                    <option value="{{$cat->id}}">{{$cat->category_name}}</option>
+                                <option value="{{$cat->id}}">{{$cat->category_name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -50,6 +52,7 @@
             </div>
         </div>
     </div>
+    @endcan
     
 </div>
 
@@ -85,8 +88,14 @@
                                             <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="5" cy="12" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="19" cy="12" r="2"/></g></svg>
                                         </button>
                                         <div class="dropdown-menu">
+                                            @can('edit_subcategory')
+                                                
                                             <a class="dropdown-item" href="{{route('scat.edit', $scat->id)}}">Edit</a>
+                                            @endcan
+                                            @can('delete_subcategory')
+                                                
                                             <a class="dropdown-item" href="{{route('scat.sdel', $scat->id)}}">Delete</a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </td>
@@ -100,6 +109,8 @@
     </div>
 </div>
 
+@can('trash_subcategory')
+    
 <div class="row">
     <div class="col-lg-12">
         <div class="col-lg-9 m-auto">
@@ -120,7 +131,7 @@
                         </thead>
                         <tbody>
                             @foreach ($trash as $key=>$scat)
-                                
+                            
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{$scat->rel_to_cat->category_name}}</td>
@@ -146,5 +157,6 @@
         </div>
     </div>
 </div>
+@endcan
 
 @endsection

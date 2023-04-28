@@ -10,6 +10,7 @@
 
 {{-- <div class="container" style="padding-top: 0px; padding-bottom: 60px;"> --}}
     <div class="row">
+        @can('add_admin')
         <div class="col-lg-3 order-2">
             <div class="card">
                 <div class="card-header">
@@ -75,7 +76,8 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div>     
+        @endcan
     {{-- </div>
     <div class="row"> --}}
         <div class="col-lg-9 order-1">
@@ -121,8 +123,12 @@
                                         <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-26px, 40px, 0px);">
-                                        <a class="dropdown-item" href="{{ route('admin.edit.users.page', $user->id) }}">Edit</a>
-                                        <a class="dropdown-item" href="{{route('admin.user.delete', $user->id)}}">Delete</a>
+                                        @can('edit_admin')
+                                            <a class="dropdown-item" href="{{ route('admin.edit.users.page', $user->id) }}">Edit</a>
+                                        @endcan
+                                        @can('delete_admin')
+                                            <a class="dropdown-item" href="{{route('admin.user.delete', $user->id)}}">Delete</a>
+                                        @endcan
                                     </div>
                                 </div>
                             </td>

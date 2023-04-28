@@ -34,8 +34,26 @@
                     <tbody>
                         @foreach($customer as $val)
                         <tr>
-                            <td><a href="{{ route('admin.customer.control.details', $val->id) }}"><img style="border-radius: 50%; padding: 5px;border: 1px solid #f0f1f5;" width="40px" src="{{ $val->profile_image == null ? asset('backend/images') : asset('uploads/customer') }}/{{ $val->profile_image == null ? 'user-dummy.png' : $val->profile_image }}" alt=""></a></td>
-                            <td><a href="{{ route('admin.customer.control.details', $val->id) }}">{{ $val->name }}</a></td>
+                            <td>
+                                @can('customer_details')
+                                    
+                                <a href="{{ route('admin.customer.control.details', $val->id) }}">
+                                    @endcan
+                                    <img style="border-radius: 50%; padding: 5px;border: 1px solid #f0f1f5;" width="40px" src="{{ $val->profile_image == null ? asset('backend/images') : asset('uploads/customer') }}/{{ $val->profile_image == null ? 'user-dummy.png' : $val->profile_image }}" alt="">
+                                    @can('customer_details')
+                                </a>
+                                @endcan
+                            </td>
+                            <td>
+                                @can('customer_details')
+                                    
+                                <a href="{{ route('admin.customer.control.details', $val->id) }}">
+                                    @endcan
+                                    {{ $val->name }}
+                                    @can('customer_details')
+                                </a>
+                                @endcan
+                            </td>
                             <td class="text-center">{{ $val->rel_to_opro->count() }}</td>
                         </tr>
                         @endforeach

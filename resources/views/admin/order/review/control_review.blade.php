@@ -47,48 +47,7 @@
           </div>              
     </div>
 </div>
-{{-- <div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            @forelse($review->groupBy('product_id') as $opro)
-                <div class="row" style="background: #f0f1f5; padding: 22px 0px; border-radius: 8px;">
-                    <div class="col-lg-2">
-                        <div class="text-center mt-4">
-                            <img width="55px" style="" src="{{ asset('uploads/product/preview') }}/{{ $opro->first()->rel_to_product->preview }}" alt="">
-                            <div class="name mt-3" style="font-size: 14px;">{{ $opro->first()->rel_to_product->product_name }}</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-10">
-                        <ul>
-                            @forelse($opro as $rev)
-                                <li style="padding: 28px 0px;">
-                                    <div class="div">
-                                        <div class="boxi" style="display: flex; flex-flow: column nowrap; align-items: center; justify-content: center;">
-                                            <img width="35px" style="border-radius: 50%; padding: 5px; border: 1px solid #dad6d6da;" src="{{ $rev->rel_to_customer->profile_image == null ? asset('backend/images') : asset('uploads/customer') }}/{{ $rev->rel_to_customer->profile_image == null ? 'user-dummy.png' : $rev->rel_to_customer->profile_image }}" alt="">
-                                            <div class="name mt-2" style="font-size: 13px;">{{ $rev->rel_to_customer->name }}</div>
-                                            <div class="rating mt-1">
-                                                @for($i = 0; $i < $rev->star; $i++)
-                                                    <i class="fa fa-star"></i>
-                                                @endfor
-                                            </div>
-                                        </div>
-                                        <div class="boxii" style="font-size: 14px; padding-right: 25px;">{{ $rev->review }}</div>
-                                        <div class="boxiii" style="font-size: 14px; padding-right: 25px;"><button class="btn btn-danger">delete</button></div>
-                                    </div>
-                                </li>
-                                
-                            @empty
-                                ''
-                            @endforelse
-                        </ul>
-                    </div>
-                </div>
-            @empty
-                ''
-            @endforelse
-        </div>
-    </div>
-</div> --}}
+
 <div class="row">
     @forelse($review->groupBy('product_id') as $opro)
         <div class="col-lg-12">
@@ -114,7 +73,10 @@
                                         </div>
                                     </div>
                                     <div class="pii" style="padding: 0 20px; font-size: 13px; color:#6b6b6b; margin: auto 0;" >{{ $rev->review }}</div>
-                                    <div class="piii" style="margin: auto 0;"><button class="btn-danger" style="padding: 6px 10px; border-radius: 6px; border: none;">Delete</button></div>
+                                    @can('product_review_delete')
+                                        
+                                    <div class="piii" style="margin: auto 0;"><a href="{{ route('admin.remove.review', $rev->id) }}" class="btn-danger" style="padding: 6px 10px; border-radius: 6px; border: none;">Delete</a></div>
+                                    @endcan
                                 </div>
                             @empty
     

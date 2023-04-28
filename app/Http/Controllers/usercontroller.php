@@ -15,6 +15,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 // use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -28,13 +30,27 @@ class UserController extends Controller
         return back()->with('succeed', 'The deletion operation succeed properly!');
     }
 
-    function profile(){
-        return view('admin.users.profile');
+    function admin_profile(){
+        $info = Auth::user();
+        return view('admin.users.profile', [
+            'info' => $info,
+        ]);
+    }
+
+    function superadmin_role_management_page() {
+        $permission = Permission::all();
+        $admin = User::all();
+        $role = Role::all();
+        return view('admin.superadmin.role_management', [
+            'permission' => $permission,
+            'roles' => $role,
+            'admins' => $admin,
+        ]);
     }
 
     function customer_control() {
         $customer = CustomerLogin::all();
-        return view('admin.users.customer_control', [
+        return view('admin.customer.customer_control', [
             'customer' => $customer,
         ]);
     }
@@ -49,7 +65,7 @@ class UserController extends Controller
         $order = Order::where('customer_id', $cus_id)->orderBy('created_at', 'desc')->get();
         // print_r();
         // echo date('d, M Y', strtotime($order->take(1)->first()->created_at));
-        return view('admin.users.customer_control_details', [
+        return view('admin.customer.customer_control_details', [
             'cus_id' => $cus_id,
             'info' => $info,
             'opro' => $opro,
