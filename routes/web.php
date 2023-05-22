@@ -65,6 +65,15 @@ Route::get('/store/logout/customer', [CustomerLoginController::class, 'user_logo
 Route::get('/login/github', [CustomerRegisterController::class, 'redirectToGithub'])->name('login.github');
 Route::get('/login/github/callback', [CustomerRegisterController::class, 'handleGithubCallback']);
 
+//Google Login
+Route::get('/login/google', [CustomerRegisterController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [CustomerRegisterController::class, 'handleGoogleCallback']);
+
+
+//Facebook Login
+Route::get('/login/facebook', [CustomerRegisterController::class, 'redirectToFacebook'])->name('login.google');
+Route::get('/login/facebook/callback', [CustomerRegisterController::class, 'handleFacebookCallback']);
+
 
 
 // cart----------------

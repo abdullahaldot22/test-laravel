@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\CustomerLogin;
+use Image;
 use App\Models\customerEmailVerify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Unique;
@@ -75,19 +76,97 @@ class CustomerRegisterController extends Controller
     public function handleGithubCallback(){
         $user = Socialite::driver('github')->user();
         $finduser = CustomerLogin::where('github_id', $user->id)->first();
-        if($finduser){
-            Auth::guard('customerlogin')->login($finduser);
+        $usermail = $user->getEmail();
+        $findemail = CustomerLogin::where('email', $user->getEmail())->exists();
+
+        if(Auth::guard('customerlogin')->attempt(['email' => $user->getEmail(), 'password' => bcrypt('123456dummy')])){
             return redirect(route('customer.home'));
         }else{
+            
+            $url = $user->getAvatar();
+            $contents = file_get_contents($url);
+            // $ext = $contents->getClientOriginalExtension();
+            $iname = 'customer-git-'.$user->getId().'.png';
+
             $newUser = CustomerLogin::updateOrCreate(['email' => $user->email],[
                 'name' => $user->name,
                 'email_verify_at' => Carbon::now(),
                 'github_id'=> $user->id,
-                'password' => encrypt('123456dummy')
+                'profile_image' => $iname,
+                'password' => bcrypt('123456dummy'),
             ]);
+            Image::make($contents)->save(public_path('uploads/customer/'.$iname));
             Auth::guard('customerlogin')->login($newUser);
             return redirect()->route('customer.home');
         }
     }
+
+
+
+
+    function redirectToGoogle(){
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback(){
+        $user = Socialite::driver('google')->user();
+        $finduser = CustomerLogin::where('google_id', $user->id)->first();
+        $usermail = $user->getEmail();
+        $findemail = CustomerLogin::where('email', $user->getEmail())->exists();
+
+        if(Auth::guard('customerlogin')->attempt(['email' => $user->getEmail(), 'password' => bcrypt('123456dummy')])){
+            return redirect(route('customer.home'));
+        }else{
+            
+            $url = $user->getAvatar();
+            $contents = file_get_contents($url);
+            // $ext = $contents->getClientOriginalExtension();
+            $iname = 'customer-google-'.$user->getId().'.png';
+
+            $newUser = CustomerLogin::updateOrCreate(['email' => $user->email],[
+                'name' => $user->name,
+                'email_verify_at' => Carbon::now(),
+                'github_id'=> $user->id,
+                'profile_image' => $iname,
+                'password' => bcrypt('123456dummy'),
+            ]);
+            Image::make($contents)->save(public_path('uploads/customer/'.$iname));
+            Auth::guard('customerlogin')->login($newUser);
+            return redirect()->route('customer.home');
+        }
+    }
+
+
+    // function redirectToFacebook(){
+    //     return Socialite::driver('facebook')->redirect();
+    // }
+
+    // public function handleFacebookCallback(){
+    //     $user = Socialite::driver('facebook')->user();
+    //     $finduser = CustomerLogin::where('facebook_id', $user->id)->first();
+    //     $usermail = $user->getEmail();
+    //     $findemail = CustomerLogin::where('email', $user->getEmail())->exists();
+
+    //     if(Auth::guard('customerlogin')->attempt(['email' => $user->getEmail(), 'password' => bcrypt('123456dummy')])){
+    //         return redirect(route('customer.home'));
+    //     }else{
+            
+    //         $url = $user->getAvatar();
+    //         $contents = file_get_contents($url);
+    //         // $ext = $contents->getClientOriginalExtension();
+    //         $iname = 'customer-facebook-'.$user->getId().'.png';
+
+    //         $newUser = CustomerLogin::updateOrCreate(['email' => $user->email],[
+    //             'name' => $user->name,
+    //             'email_verify_at' => Carbon::now(),
+    //             'github_id'=> $user->id,
+    //             'profile_image' => $iname,
+    //             'password' => bcrypt('123456dummy'),
+    //         ]);
+    //         Image::make($contents)->save(public_path('uploads/customer/'.$iname));
+    //         Auth::guard('customerlogin')->login($newUser);
+    //         return redirect()->route('customer.home');
+    //     }
+    // }
 
 }

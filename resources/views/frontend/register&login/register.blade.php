@@ -57,7 +57,7 @@
                             <div class="form-group row w-100 m-auto" style="padding: 10px 12px; border: 3px solid #91bbe2;">
                                 <div class="w-100 m-auto">
                                     <a href="{{ route('login.github') }}" class="btn btn-dark btn-block w-100">Login with Github</a>
-                                  <a href="" class="btn btn-danger btn-block w-100">Login with Google</a>
+                                  <a href="{{ route('login.google') }}" class="btn btn-danger btn-block w-100">Login with Google</a>
                                   <a href="" class="btn btn-primary btn-block w-100">Login with Facebook</a>
                                </div>
                             </div>  

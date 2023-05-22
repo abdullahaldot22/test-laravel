@@ -167,7 +167,7 @@
 							<a class="usr-block" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<div class="name">{{ Auth::guard('customerlogin')->user()->name }}</div> 
 								@if(Auth::guard('customerlogin')->user()->profile_image != null && Auth::guard('customerlogin')->user()->profile_image != '' && Auth::guard('customerlogin')->user()->profile_image != 'undefined')
-									<img src="{{ asset('uploads/customer') }}/{{ Auth::guard('customerlogin')->user()->profile_image }}" alt="">
+									<img src="{{ asset('uploads/customer') }}/{{ Auth::guard('customerlogin')->user()->profile_image }}" alt="" style="border-radius: 20px;">
 								@else
 									<i class="fa-solid fa-user"></i>
 								@endif
