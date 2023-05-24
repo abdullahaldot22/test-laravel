@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Str;
+use App;
 use Carbon\Carbon;
 use App\Models\size;
 use App\Models\color;
@@ -59,6 +60,16 @@ class FrontendController extends Controller
             $avg_star = $star_sum/count($review);
         }
         
+        $shareComponent = \Share::page(
+            url()->current(),
+            $pro_info->first()->product_name,
+        )
+        ->facebook()
+        ->twitter()
+        ->linkedin()
+        ->telegram()
+        ->whatsapp()        
+        ->reddit();
      
         return view('frontend.product.details', [
             'pro_info'=>$pro_info,
@@ -68,6 +79,7 @@ class FrontendController extends Controller
             'av_size'=>$in_size,
             'reviews'=>$review,
             'avg_star'=>$avg_star,
+            'shareComponent'=>$shareComponent,
         ]);
     }
 
@@ -237,6 +249,11 @@ class FrontendController extends Controller
         // return orderProduct::where('order_id', $order_id)->get();
     }
 
+    function change_lang(Request $request){
+        App::setLocale($request->lang);
+        session()->put('locale', $request->lang);
+        return redirect()->back();
+    }
 
 
 }

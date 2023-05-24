@@ -122,6 +122,25 @@
 			align-items: center;
 			justify-content: center;
 		}
+		div#social-links {
+			/* margin: 0 auto; */
+			max-width: 500px;
+		}
+		div#social-links ul{
+			margin: 0;
+			padding-left: 0;
+		}
+		div#social-links ul li {
+			display: inline-block;
+		}          
+		div#social-links ul li a {
+			padding: 0 10px;
+			/* border: 1px solid #ccc; */
+			margin: 0;
+			font-size: 20px;
+			color: #222;
+			/* background-color: #ccc; */
+		}
 	</style>
 
 <!-- ============================================================== -->
@@ -152,13 +171,15 @@
 				<div class="language-selector-wrapper dropdown js-dropdown float-right mr-3">
 					<a class="popup-title" href="javascript:void(0)" data-toggle="dropdown" title="Language" aria-label="Language dropdown">
 						<span class="hidden-xl-down medium text-muted">Language:</span>
-						<span class="iso_code medium text-muted">English</span>
-						<i class="fa fa-angle-down medium text-muted"></i>
+						<select class="changeLang popup-content" style="border: 0 solid transparent; background: transparent; cursor: pointer; color: #636872;">
+							<option class="dropdown-item medium" value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}><span>English</span></option>
+							<option class="dropdown-item medium" value="fr" {{ session()->get('locale') == 'fr' ? 'selected' : '' }}><span>Français</span></option>
+						</select>
+						{{-- <ul class="dropdown-menu popup-content link">
+							<li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-muted"><img src="assets/img/1.jpg" alt="en" width="16" height="11" /><span>English</span></a></li>
+							<li><a href="javascript:void(0);" class="dropdown-item medium text-muted"><img src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a></li>
+						</ul> --}}
 					</a>
-					<ul class="dropdown-menu popup-content link">
-						<li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-muted"><img src="assets/img/1.jpg" alt="en" width="16" height="11" /><span>English</span></a></li>
-						<li><a href="javascript:void(0);" class="dropdown-item medium text-muted"><img src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a></li>
-					</ul>
 				</div>
 				
 				<div style="cursor: pointer;" class="currency-selector dropdown js-dropdown float-right mr-3">
@@ -607,7 +628,14 @@ function openSearch() {
 function closeSearch() {
 	document.getElementById("Search").style.display = "none";
 }
-</script>	
+</script>
+
+<script type="text/javascript">
+    var url = "{{ route('changeLang') }}";
+    $(".changeLang").change(function(){
+        window.location.href = url + "?lang="+ $(this).val();
+    });
+</script>
 
 
 

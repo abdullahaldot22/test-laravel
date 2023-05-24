@@ -243,7 +243,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
                 <div class="tags_explore text-center">
-                    <h2 class="mb-0 text-white ft-bold">Big Sale Up To 70% Off</h2>
+                    <h2 class="mb-0 text-white ft-bold">{{ __('messages.title') }}</h2>
                     <p class="text-light fs-lg mb-4">Exclussive Offers For Limited Time</p><p>
                     <a href="#" class="btn btn-lg bg-white px-5 text-dark ft-medium">Explore Your Order</a>
                 </p></div>

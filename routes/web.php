@@ -74,7 +74,8 @@ Route::get('/login/google/callback', [CustomerRegisterController::class, 'handle
 Route::get('/login/facebook', [CustomerRegisterController::class, 'redirectToFacebook'])->name('login.google');
 Route::get('/login/facebook/callback', [CustomerRegisterController::class, 'handleFacebookCallback']);
 
-
+// Change Language --------------------------------------------------------------------------------------------------------
+Route::get('lang/change', [FrontendController::class, 'change_lang'])->name('changeLang');
 
 // cart----------------
 Route::post('/store/cart', [CartController::class, 'store_cart'])->name('store.cart');
