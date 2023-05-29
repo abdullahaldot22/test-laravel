@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< Updated upstream
-use Str;
-=======
 use App;
 use PDF;
 use Str;
 use Carbon\Carbon;
-use App\Models\size;
 use App\Models\color;
 use App\Models\Order;
->>>>>>> Stashed changes
 use App\Models\product;
 use App\Models\category;
-use App\Models\color;
 use App\Models\inventory;
 use App\Models\thumbnail;
 use App\Models\subcategory;
