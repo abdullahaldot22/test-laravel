@@ -10,6 +10,7 @@ use App\Http\Controllers\CouponController;
 use App\HTTP\Controllers\productcontroller;
 use App\HTTP\Controllers\CategoryController;
 use App\Http\Controllers\checkoutController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\customerController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\WishListController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\CustomerLoginController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
+use App\Http\Controllers\faqController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\superAdminRoleManagementController;
 
@@ -55,6 +57,9 @@ Route::post('/getSize', [FrontendController::class, 'getSize']);
 Route::post('/getavQuantity', [FrontendController::class, 'getavQuantity']);
 Route::post('/getState', [checkoutController::class, 'getState']);
 Route::post('/getCity', [checkoutController::class, 'getCity']);
+
+// dummy download =============================================================================
+Route::get('/dummy/download', [Controller::class, 'dummy_download'])->name('dummy.download');
 
 // log in
 Route::post('/store/register/customer', [CustomerRegisterController::class, 'user_register'])->name('customer.register.store');
@@ -183,6 +188,10 @@ Route::get('/customer/order/details/{ordr_id}', [orderAdminController::class, 'o
 Route::get('/customer/order/review', [orderAdminController::class, 'control_review'])->name('review.control');
 Route::get('/customer/order/admin/review/remove/{cus_id}', [orderAdminController::class, 'admin_remove_review'])->name('admin.remove.review');
 Route::get('/order/notification/status/update/{not_id}', [orderAdminController::class, 'order_notification_status_update'])->name('order.notification.status.update');
+
+
+// FAQ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Route::resource('faq', faqController::class);
 
 
 // SSLCOMMERZ Start

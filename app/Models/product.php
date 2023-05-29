@@ -20,4 +20,7 @@ class product extends Model
     function rel_to_inventory() {
         return $this->hasMany(inventory::class, 'product_id');
     }
+    function rel_op() {
+        return $this->hasMany(orderProduct::class, 'product_id');
+    }
 }

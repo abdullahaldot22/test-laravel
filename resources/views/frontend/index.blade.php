@@ -38,7 +38,7 @@
                                                 <span class="trending">Apple 10 comes with 6.5 inches full HD + High Valume</span>
                                             </div>
 
-                                            <a href="#" class="btn btn-white stretched-link hover-black">Buy Now<i class="lni lni-arrow-right ml-2"></i></a>
+                                            <a href="{{ route('dummy.download') }}" class="btn btn-white stretched-link hover-black">Download Now<i class="lni lni-arrow-right ml-2"></i></a>
                                         </div>
                                         <!-- Slide Title / End -->
 
@@ -493,74 +493,45 @@
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                 <div class="ftr-title"><h4 class="ft-medium">Recent Products</h4></div>
                 <div class="ftr-content">
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/7.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">TV/LED</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Smart 43 Inch LED</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
+                    @forelse($recent_product as $id)
+                        @php
+                            $info = App\Models\product::find($id);
+                            $triv = $info->rel_op->whereNotNull('star')->count();
+                            $st = $info->rel_op->sum('star');
+                            $triv == 0 ? $triv = 1 : $triv;
+                            $avg = round($st / $triv);
+                            $avg == null || $avg == 0 ? $avg = 1 : $avg;
+                        @endphp
+                        <!-- Single Item -->
+                        <div class="product_grid row">
+                            <div class="col-xl-4 col-lg-5 col-md-5 col-4">
+                                <div class="shop_thumb position-relative">
+                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="{{ asset('uploads/product/preview') }}/{{ $info->preview }}" alt="..."></a>
                                 </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$909 - $1400</span></div>
                             </div>
-                        </div>
-                    </div>
+                            <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
+                                <div class="text-left mfliud">
+                                    <div class="elso_titl"><span class="small">{{ $info->rel_scat->subcategory_name }}</span></div>
+                                    <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">{{ $info->product_name }}</a></h5>
+                                    <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
+                                        @for($i = 0; $i < $avg; $i++)
+                                            <i class="fas fa-star filled"></i>
+                                        @endfor
+                                        @for($i = 0; $i < 5 - $avg; $i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
+                                        {{-- <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i> --}}
+                                    </div>
+                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$ {{ number_format($info->price) }}</span></div>
+                                </div>
+                            </div>
+                        </div>                        
+                    @empty
+                        Not Found
+                    @endforelse
                     
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/8.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">Headphone</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Vivo Smart Headphone</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$129 - $549</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Single Item -->
-                    <div class="product_grid row">
-                        <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                            <div class="shop_thumb position-relative">
-                                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="assets/img/shop/9.png" alt="..."></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                            <div class="text-left mfliud">
-                                <div class="elso_titl"><span class="small">Mobiles</span></div>
-                                <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Micro Android Phones</a></h5>
-                                <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star filled"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$990 - $1949</span></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             

@@ -2,18 +2,30 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< Updated upstream
 use Str;
+=======
+use App;
+use PDF;
+use Str;
+use Carbon\Carbon;
+use App\Models\size;
+use App\Models\color;
+use App\Models\Order;
+>>>>>>> Stashed changes
 use App\Models\product;
 use App\Models\category;
 use App\Models\color;
 use App\Models\inventory;
 use App\Models\thumbnail;
 use App\Models\subcategory;
+use Illuminate\Support\Arr;
 use App\Models\orderProduct;
 use App\Models\size;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class FrontendController extends Controller
 {
@@ -26,6 +38,10 @@ class FrontendController extends Controller
     }
 
     function home() {
+        $recent_view = json_decode(Cookie::get('recent_view'), true);
+        $recent_view == null ? $recent_view = [] : $recent_view = array_reverse($recent_view);
+        $recent_view = array_slice($recent_view, -3, 3, true);;
+        
         $category = category::orderBy('category_name')->take(7)->get();
         $subcategory = subcategory::orderBy('subcategory_name')->take(12)->get();
         $product = product::take(8)->get();
@@ -35,6 +51,7 @@ class FrontendController extends Controller
             'scat'=>$subcategory,
             'product'=>$product,
             'top_selling_product'=>$top_selling_product,
+            'recent_product' => $recent_view,
         ]);
     }
 
@@ -47,6 +64,16 @@ class FrontendController extends Controller
         $review = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->get();
 
         $star_sum = orderProduct::where('product_id', $pro_info->first()->id)->whereNotNull('review')->sum('star');
+
+        $pid = $pro_info->first()->id;
+        $ck = Cookie::get('recent_view');
+        if ($ck == null) {$ck = '[]';}
+        $ckinfo = json_decode($ck, true);
+        $ckinfo = Arr::prepend($ckinfo, $pid);
+        $ckinfo = array_unique($ckinfo);
+        $all = json_encode($ckinfo);
+        Cookie::queue('recent_view', $all, 100);
+
         
         if(count($review)<1){
             $avg_star = 0;
