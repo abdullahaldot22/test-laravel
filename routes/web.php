@@ -10,10 +10,6 @@ use App\Http\Controllers\CouponController;
 use App\HTTP\Controllers\productcontroller;
 use App\HTTP\Controllers\CategoryController;
 use App\Http\Controllers\checkoutController;
-<<<<<<< HEAD
-=======
-use App\Http\Controllers\Controller;
->>>>>>> main
 use App\Http\Controllers\customerController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\WishListController;
@@ -23,10 +19,6 @@ use App\Http\Controllers\CustomerLoginController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\customerProfileController;
 use App\Http\Controllers\CustomerRegisterController;
-<<<<<<< HEAD
-=======
-use App\Http\Controllers\faqController;
->>>>>>> main
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\superAdminRoleManagementController;
 
@@ -64,18 +56,11 @@ Route::post('/getavQuantity', [FrontendController::class, 'getavQuantity']);
 Route::post('/getState', [checkoutController::class, 'getState']);
 Route::post('/getCity', [checkoutController::class, 'getCity']);
 
-<<<<<<< HEAD
-=======
-// dummy download =============================================================================
-Route::get('/dummy/download', [Controller::class, 'dummy_download'])->name('dummy.download');
-
->>>>>>> main
 // log in
 Route::post('/store/register/customer', [CustomerRegisterController::class, 'user_register'])->name('customer.register.store');
 Route::post('/store/login/customer', [CustomerLoginController::class, 'user_login'])->name('customer.login');
 Route::get('/store/logout/customer', [CustomerLoginController::class, 'user_logout'])->name('customer.logout');
 
-<<<<<<< HEAD
 //Github Login
 Route::get('/login/github', [CustomerRegisterController::class, 'redirectToGithub'])->name('login.github');
 Route::get('/login/github/callback', [CustomerRegisterController::class, 'handleGithubCallback']);
@@ -92,8 +77,6 @@ Route::get('/login/facebook/callback', [CustomerRegisterController::class, 'hand
 // Change Language --------------------------------------------------------------------------------------------------------
 Route::get('lang/change', [FrontendController::class, 'change_lang'])->name('changeLang');
 
-=======
->>>>>>> main
 // cart----------------
 Route::post('/store/cart', [CartController::class, 'store_cart'])->name('store.cart');
 Route::get('/store/remove/cart/{cart_id}', [CartController::class, 'cart_remove'])->name('cart.remove')->middleware('customerlogin');
@@ -121,13 +104,9 @@ Route::get('/customer/verification/email/{token}', [CustomerLoginController::cla
 
 // mail check ----------------------------------------------
 
-<<<<<<< HEAD
 // order invoice --------------------------------------------------------------------------------------------------------------
 // Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
 Route::get('/order/invoice/download/{order_id}', [FrontendController::class, 'order_invoice_download'])->name('order.invoice.download');
-=======
-// Route::get('/invoice', [FrontendController::class, 'invoice_check'])->name('invoice.check');
->>>>>>> main
 
 
 // stripe ---------------------------------------------------
@@ -224,13 +203,6 @@ Route::get('/customer/order/admin/review/remove/{cus_id}', [orderAdminController
 Route::get('/order/notification/status/update/{not_id}', [orderAdminController::class, 'order_notification_status_update'])->name('order.notification.status.update');
 
 
-<<<<<<< HEAD
-=======
-// FAQ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Route::resource('faq', faqController::class);
-
-
->>>>>>> main
 // SSLCOMMERZ Start
 // Route::get('/example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
 // Route::get('/example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);
